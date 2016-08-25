@@ -1,0 +1,10 @@
+<html>
+  <div>
+    <p>Number of files: {{ len .files }}</p>
+    <ul>
+      {{ range .files}}
+      <li>{{ .Name }}</li>
+      {{ end }}
+    </ul>
+  </div>
+</html>

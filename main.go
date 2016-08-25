@@ -14,17 +14,18 @@ func main() {
 		c.String(http.StatusOK, "Hello %s", name)
 	})
 
-	r.GET("/files", func(c *gin.Context) {
+	r.LoadHTMLGlob("templates/*")
+
+	r.GET("/list", func(c *gin.Context) {
 		files, err := ioutil.ReadDir("tmp/dat")
 		if err != nil {
 			panic(err)
 		}
 
-		for _, f := range files {
-			c.String(http.StatusOK, "%s\n", f.Name())
-		}
+		c.HTML(http.StatusOK, "list.tmpl", gin.H{
+			"files": files,
+		})
 	})
 
-	// listen and server on 0.0.0.0:8080
 	r.Run()
 }
