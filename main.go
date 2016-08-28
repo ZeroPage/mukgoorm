@@ -9,11 +9,6 @@ import (
 func main() {
 	r := gin.Default()
 
-	r.GET("/hello/:name", func(c *gin.Context) {
-		name := c.Param("name")
-		c.String(http.StatusOK, "Hello %s", name)
-	})
-
 	r.LoadHTMLGlob("templates/*")
 
 	r.GET("/list", func(c *gin.Context) {
