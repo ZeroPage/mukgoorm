@@ -4,7 +4,31 @@
       {{ range .files}}
       <li>
         <a href="/down?fn={{.Name}}">{{ .Name }}</a>
+        <a href="/down?fn={{.Name}}"><input type="button", name="downlaod" value="download"/></a>
+        <input type="button", name="share" value="share" onClick="add({{.Name}})">
       </li>
       {{ end }}
     </ul>
+
+    <form action="/upload" enctype="multipart/form-data" method="post">
+      <p>
+        type some text(optionally):<br>
+        <input type="text" name="textline" size="30">
+      </p>
+      <p>
+        please specify a file, or a set of files: <br>
+        <input type="file", name="image" size="40">
+      </p>
+      <div>
+        <input type="submit" value="send">
+      </div>
+    </form>
+
+    <script type="text/javascript">
+      function add(name){
+          //FIXME replace host name with variable
+        var r = alert("localhost:8080/down?fn=" + name);
+        // find  new way to display links
+      }
+    </script>
 {{template "footer"}}
