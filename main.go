@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/cmd"
@@ -148,7 +148,8 @@ func NewEngine() *gin.Engine {
 		fileName := c.Query("dir")
 		file, err := ioutil.ReadFile(fileName)
 		if err != nil {
-			panic(err)
+			c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
+			log.Info(err)
 		}
 
 		c.Data(http.StatusOK, "application/octet-stream", file)
