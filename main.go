@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -20,6 +21,16 @@ func main() {
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})
+	})
+
+	r.GET("/down", func(c *gin.Context) {
+		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
+		file, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			panic(err)
+		}
+
+		c.Data(http.StatusOK, "application/octet-stream", file)
 	})
 
 	r.Run()
