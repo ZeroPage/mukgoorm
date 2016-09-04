@@ -10,7 +10,6 @@ import (
 
 func main() {
 	router := gin.Default()
-
 	router.POST("/upload", func(c *gin.Context) {
 
 		file, header, err := c.Request.FormFile("image")
@@ -19,7 +18,7 @@ func main() {
 		}
 		filename := header.Filename
 		fmt.Println(header.Filename)
-		out, err := os.Create("./tmp/" + filename + ".png")
+		out, err := os.Create("./tmp/" + filename)
 		if err != nil {
 			log.Fatal(err)
 		}
