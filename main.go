@@ -21,9 +21,24 @@ func main() {
 			panic(err)
 		}
 
-		c.HTML(http.StatusOK, "UploadFile.tmpl", gin.H{
+		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})
+	})
+	/*
+		1. show file's information(name, size, width, height etc) if filename is clicked
+		2. add new button
+		3. add download event if each file's button is clicked
+	*/
+
+	r.GET("/down", func(c *gin.Context) {
+		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
+		file, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			panic(err)
+		}
+
+		c.Data(http.StatusOK, "application/octet-stream", file)
 	})
 
 	r.POST("/upload", func(c *gin.Context) {
@@ -44,7 +59,6 @@ func main() {
 			log.Fatal(err)
 		}
 		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
-
 	})
 
 	r.Run()

@@ -1,4 +1,6 @@
 build:
 	go build .
+clean:
+	go clean
 
-.PONEY: build
+.PONEY: clean build

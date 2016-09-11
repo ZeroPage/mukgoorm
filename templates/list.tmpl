@@ -3,8 +3,23 @@
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
-      <li>{{ .Name }}</li>
+      <li>
+        <a href="/down?fn={{.Name}}">{{ .Name }}</a>
+      </li>
       {{ end }}
     </ul>
   </div>
+  <form action="http://localhost:8080/upload" enctype="multipart/form-data" method="post">
+    <p>
+      type some text(optionally):<br>
+      <input type="text" name="textline" size="30">
+    </p>
+    <p>
+      please specify a file, or a set of files: <br>
+      <input type="file", name="image" size="40">
+    </p>
+    <div>
+      <input type="submit" value="send">
+    </div>
+  </form>
 </html>
