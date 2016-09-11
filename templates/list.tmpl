@@ -4,7 +4,8 @@
     <ul>
       {{ range .files}}
       <li>
-        <a href="/down?fn={{.Name}}">{{ .Name }}</a>
+        <a href="/info?fn={{.Name}}">{{ .Name }}</a>
+        <a href="/down?fn={{.Name}}"><input type="button", name="downlaod" value="download"/></a>
       </li>
       {{ end }}
     </ul>
