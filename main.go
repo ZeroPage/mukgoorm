@@ -25,11 +25,6 @@ func main() {
 			"files": files,
 		})
 	})
-	/*
-		1. show file's information(name, size, width, height etc) if filename is clicked
-		2. add new button
-		3. add download event if each file's button is clicked
-	*/
 
 	r.GET("/down", func(c *gin.Context) {
 		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
@@ -39,6 +34,19 @@ func main() {
 		}
 
 		c.Data(http.StatusOK, "application/octet-stream", file)
+	})
+
+	r.GET("/info", func(c *gin.Context) {
+		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
+		file, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			panic(err)
+		}
+
+		c.HTML(http.StatusOK, "info.tmpl", gin.H{
+			"files": file,
+		})
+		// this code is just give url(ex. localhost:8080/list?fn=hello2.txt)
 	})
 
 	r.POST("/upload", func(c *gin.Context) {
