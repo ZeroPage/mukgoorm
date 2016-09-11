@@ -3,7 +3,9 @@
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
-      <li>{{ .Name }}</li>
+      <li>
+        <a href="/down?fn={{.Name}}">{{ .Name }}</a>
+      </li>
       {{ end }}
     </ul>
   </div>
