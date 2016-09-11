@@ -1,70 +1,114 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
-	"fmt"
 )
+type Grant int
+const (
+	FAIL Grant = iota
+	ADMIN
+	READ_ONLY
+)
+const SESSION_EXPIRE_TIME int = 1800
 
-func setPassword(adminPassword string, readOnlyPassword string){
-	file1, _ := os.Create("test.txt")        // hello1.txt 파일 생성
-	defer file1.Close()                        // main 함수가 끝나기 직전에 파일을 닫음
-	fmt.Fprint(file1, adminPassword + " " + readOnlyPassword)
+func checkLogin(c *gin.Context) { //check login
+	session := sessions.Default(c)
+	if session.Get("authority") == nil {
+		c.Redirect(http.StatusMovedPermanently, "/login")
+		return
+	}
+	switch Grant(session.Get("authority").(int)) {
+		//Grant(session.Get("authority")) will cause error: "cannot convert session.Get("authority") (type interface {}) to type Grant: need type assertion"
+		//session.Get("authority").(int) will cause error: "invalid case ADMIN(and READ_ONLY) in switch on session.Get("authority").(int) (mismatched types Grant and int)"
+	case ADMIN:
+		return
+	case READ_ONLY:
+		return
+	default:
+		c.Redirect(http.StatusMovedPermanently, "/login")
+	}
 }
-func authorize(password string) string{
-	var adminPassword string
-	var readOnlyPassword string
-	file1, _ := os.Open("test.txt")    // hello2.txt 파일 열기
-	defer file1.Close()                  // main 함수가 끝나기 직전에 파일을 닫음
-	fmt.Fscanln(file1, &adminPassword, &readOnlyPassword)
-	if strings.Compare(adminPassword, password) == 0{
-		fmt.Print("admin\n")
-		return "admin"
+
+func checkAuthority(c *gin.Context) { //check admin ,otherwise redirect to login or list
+	session := sessions.Default(c)
+	if session.Get("authority") == nil {
+		c.Redirect(http.StatusMovedPermanently, "/login")
+		return
 	}
-	if strings.Compare(readOnlyPassword, password) == 0{
-		fmt.Print("read Only\n")
-		return "readOnlyPassword"
+	switch Grant(session.Get("authority").(int)) {
+	case FAIL:
+		c.Redirect(http.StatusMovedPermanently, "/login")
+	case ADMIN:
+		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
+		return
+	case READ_ONLY:
+		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
+		c.Redirect(http.StatusMovedPermanently, "/list")
 	}
-	return "fail"
 }
 
 func main() {
 	r := gin.Default()
 
+	store := sessions.NewCookieStore([]byte("secret"))
+
+	r.Use(sessions.Sessions("mysession", store))
+
 	r.LoadHTMLGlob("templates/*")
+
 	r.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "inputPassword.tmpl", gin.H{})
+		c.HTML(http.StatusOK, "input_password.tmpl", gin.H{})
 	})
-	r.GET("/set-login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "setPassword.tmpl", gin.H{})
+
+	r.POST("/login", func(c *gin.Context) {
+		password := c.PostForm("password")
+		var adminPassword, readOnlyPassword string
+		file1, _ := os.Open("test.txt")
+		fmt.Fscanln(file1, &adminPassword, &readOnlyPassword)
+		file1.Close()
+		var authority Grant
+		switch password {
+		case adminPassword:
+			authority = ADMIN
+		case readOnlyPassword:
+			authority = READ_ONLY
+		default:
+			authority = FAIL
+		}
+		session := sessions.Default(c)
+		session.Set("authority", int(authority))
+		//if you just put authority which is Grant type, then session save nil....
+		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
+		session.Save()
+		c.Redirect(http.StatusMovedPermanently, "/list")
 	})
-	r.POST("/login-data", func(c *gin.Context) {
-				//user := c.PostForm("user")
-				password := c.PostForm("password")
-				authorize(password)
-  })
+
+	r.GET("/set-password", func(c *gin.Context) {
+		checkAuthority(c)
+		c.HTML(http.StatusOK, "set_password.tmpl", gin.H{})
+	})
 
 	r.POST("/set-password", func(c *gin.Context) {
-				adminPassword := c.PostForm("adminPassword")
-				readOnlyPassword := c.PostForm("readOnlyPassword")
-				fmt.Print(adminPassword + " " + readOnlyPassword + "\n")
-				setPassword(adminPassword, readOnlyPassword)
+		file1, _ := os.Create("test.txt")
+		fmt.Fprint(file1, c.PostForm("adminPassword")+" "+c.PostForm("readOnlyPassword"))
+		file1.Close()
+		c.Redirect(http.StatusMovedPermanently, "/login")
 	})
 
 	r.GET("/list", func(c *gin.Context) {
+		checkLogin(c)
 		files, err := ioutil.ReadDir("tmp/dat")
 		if err != nil {
 			panic(err)
 		}
-
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})
 	})
-
 	r.Run()
 }
