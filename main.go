@@ -8,6 +8,12 @@ import (
 )
 
 func main() {
+	r := NewEngine()
+
+	r.Run()
+}
+
+func NewEngine() *gin.Engine {
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
@@ -33,5 +39,5 @@ func main() {
 		c.Data(http.StatusOK, "application/octet-stream", file)
 	})
 
-	r.Run()
+	return r
 }
