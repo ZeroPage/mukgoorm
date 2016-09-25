@@ -1,11 +1,18 @@
 <html>
   <div>
+    <script type="text/javascript">
+      function add(name){
+        var r = alert("localhost:8080/down?fn=" + name);
+        // find  new way to display links
+      }
+    </script>
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
       <li>
         <a href="/info?fn={{.Name}}">{{ .Name }}</a>
         <a href="/down?fn={{.Name}}"><input type="button", name="downlaod" value="download"/></a>
+        <input type="button", name="share" value="share" onClick="add({{.Name}})">
       </li>
       {{ end }}
     </ul>
