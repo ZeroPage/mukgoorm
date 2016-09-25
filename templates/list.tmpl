@@ -1,5 +1,6 @@
-<html>
-  <div>
+
+
+{{template "header"}}
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
@@ -8,5 +9,4 @@
       </li>
       {{ end }}
     </ul>
-  </div>
-</html>
+{{template "footer"}}
