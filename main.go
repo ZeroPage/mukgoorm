@@ -17,7 +17,6 @@ func NewEngine() *gin.Engine {
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*/*.tmpl")
-	//r.LoadHTMLGlob("templates/layout/**.tmpl")
 
 	r.GET("/list", func(c *gin.Context) {
 		files, err := ioutil.ReadDir("tmp/dat")
