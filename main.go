@@ -26,7 +26,7 @@ const SESSION_EXPIRE_TIME int = 1800
 func checkLogin(c *gin.Context) { //check login
 	session := sessions.Default(c)
 	if session.Get("authority") == nil {
-		c.Redirect(http.StatusMovedPermanently, "/login")
+		c.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
 	switch Grant(session.Get("authority").(int)) {
@@ -37,25 +37,25 @@ func checkLogin(c *gin.Context) { //check login
 	case READ_ONLY:
 		return
 	default:
-		c.Redirect(http.StatusMovedPermanently, "/login")
+		c.Redirect(http.StatusSeeOther, "/login")
 	}
 }
 
 func checkAuthority(c *gin.Context) { //check admin ,otherwise redirect to login or list
 	session := sessions.Default(c)
 	if session.Get("authority") == nil {
-		c.Redirect(http.StatusMovedPermanently, "/login")
+		c.Redirect(http.StatusSeeOther, "/login")
 		return
 	}
 	switch Grant(session.Get("authority").(int)) {
 	case FAIL:
-		c.Redirect(http.StatusMovedPermanently, "/login")
+		c.Redirect(http.StatusSeeOther, "/login")
 	case ADMIN:
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
 		return
 	case READ_ONLY:
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
-		c.Redirect(http.StatusMovedPermanently, "/list")
+		c.Redirect(http.StatusSeeOther, "/list")
 	}
 }
 
