@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/zeropage/mukgoorm/cmd"
+	"github.com/zeropage/mukgoorm/setting"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
