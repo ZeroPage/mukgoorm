@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"../setting"
+	"github.com/zeropage/mukgoorm/setting"
 
 	"github.com/stretchr/testify/assert"
 )
