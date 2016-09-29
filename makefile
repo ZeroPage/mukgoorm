@@ -3,10 +3,9 @@ build:
 clean:
 	go clean
 test:
-	go test
+	go test ./...
 server: build
 	./mukgoorm
-
 dev-server:
 	sentry -c "make test && make server" -w "*.go" -w "templates"
 install-tools:
