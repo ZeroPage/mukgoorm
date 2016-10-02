@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -37,6 +40,39 @@ func NewEngine() *gin.Engine {
 		}
 
 		c.Data(http.StatusOK, "application/octet-stream", file)
+	})
+
+	r.GET("/info", func(c *gin.Context) {
+		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
+		file, err := ioutil.ReadFile(fileName)
+		if err != nil {
+			panic(err)
+		}
+
+		c.HTML(http.StatusOK, "info.tmpl", gin.H{
+			"files": file,
+		})
+		// this code is just give url(ex. localhost:8080/list?fn=hello2.txt)
+	})
+
+	r.POST("/upload", func(c *gin.Context) {
+
+		file, header, err := c.Request.FormFile("image")
+		if err != nil {
+			panic(err)
+		}
+		filename := header.Filename
+		fmt.Println(header.Filename)
+		out, err := os.Create("./tmp/" + filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer out.Close()
+		_, err = io.Copy(out, file)
+		if err != nil {
+			log.Fatal(err)
+		}
+		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
 	})
 
 	return r
