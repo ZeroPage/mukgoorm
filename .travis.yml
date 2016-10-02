@@ -1,0 +1,19 @@
+language: go
+go:
+  - 1.4
+  - 1.5
+  - 1.6
+  - tip
+
+before_install:
+- export OLD_BUILD_DIR=$TRAVIS_BUILD_DIR
+- export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/zeropage/mukgoorm
+- mkdir -p "$TRAVIS_BUILD_DIR"
+- export MV_TARGET_DIR=$HOME/gopath/src/github.com/zeropage/
+- mv "$OLD_BUILD_DIR" "$MV_TARGET_DIR"
+- cd "$TRAVIS_BUILD_DIR"
+
+install:
+- go get -v -t github.com/zeropage/mukgoorm
+
+script: go test ./...
