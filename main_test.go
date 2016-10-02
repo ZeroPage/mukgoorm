@@ -29,7 +29,7 @@ func TestRoutes(t *testing.T) {
 	r := NewEngine()
 
 	w := PerformRequest(r, "GET", "/list")
-	assert.Equal(t, w.Code, http.StatusOK)
+	assert.Equal(t, w.Code, http.StatusSeeOther)
 
 	w = PerformRequest(r, "GET", "/down?fn=hello1.txt")
 	assert.Equal(t, w.Code, http.StatusOK)
