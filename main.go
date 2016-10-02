@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/zeropage/mukgoorm/setting"
-	"github.com/zeropage/mukgoorm/cmd"
-	"github.com/gin-gonic/gin"
 	"os"
+
 	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
+	"github.com/zeropage/mukgoorm/cmd"
+	"github.com/zeropage/mukgoorm/setting"
 )
 
 // When starting server directory parameter is needed. Else error occurs.
