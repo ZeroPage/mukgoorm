@@ -122,6 +122,7 @@ func NewEngine() *gin.Engine {
 		if err != nil {
 			panic(err)
 		}
+		
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})
