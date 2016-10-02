@@ -5,8 +5,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/zeropage/mukgoorm/setting"
+
 	"github.com/stretchr/testify/assert"
 )
+
+func initialize() {
+	setting := setting.GetDirectory()
+	setting.Path = "tmp/dat"
+}
 
 // This code came from gin-gonic/gin/routes_test.go
 func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
@@ -17,6 +24,8 @@ func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecor
 }
 
 func TestRoutes(t *testing.T) {
+	initialize()
+
 	r := NewEngine()
 
 	w := PerformRequest(r, "GET", "/list")
