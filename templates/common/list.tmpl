@@ -1,11 +1,16 @@
-<html>
-  <div>
+{{template "header"}}
+    <script type="text/javascript">
+      function ShareLink(name){
+        alert ("http://localhost:8080/down?fn=" + name);
+      }
+    </script>
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
       <li>
         <a href="/info?fn={{.Name}}">{{ .Name }}</a>
         <a href="/down?fn={{.Name}}"><input type="button", name="downlaod" value="download"/></a>
+        <input type="button", name="share" value="share" onClick="ShareLink({{.Name}});"/>
       </li>
       {{ end }}
     </ul>
@@ -23,4 +28,4 @@
       <input type="submit" value="send">
     </div>
   </form>
-</html>
+{{template "footer"}}

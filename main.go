@@ -11,9 +11,15 @@ import (
 )
 
 func main() {
+	r := NewEngine()
+
+	r.Run()
+}
+
+func NewEngine() *gin.Engine {
 	r := gin.Default()
 
-	r.LoadHTMLGlob("templates/*")
+	r.LoadHTMLGlob("templates/*/*.tmpl")
 
 	r.GET("/list", func(c *gin.Context) {
 		files, err := ioutil.ReadDir("tmp/dat")
@@ -69,5 +75,5 @@ func main() {
 		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
 	})
 
-	r.Run()
+	return r
 }
