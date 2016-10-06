@@ -71,24 +71,24 @@ func TestAuthorityFail(t *testing.T) {
 	assert.Equal(t, http.StatusSeeOther, w.Code)
 }
 
-func TestRoutes(t *testing.T) {
+func TestAllRoutesExist(t *testing.T) {
+	routetests := []struct {
+		method           string
+		location         string
+		expectStatusCode uint32
+	}{
+		{"GET", "/list", http.StatusNotFound},
+		{"GET", "/down?fn=hello1.txt", http.StatusNotFound},
+		{"GET", "/login", http.StatusNotFound},
+		{"POST", "/login", http.StatusNotFound},
+		{"GET", "/set-password", http.StatusNotFound},
+		{"POST", "/set-password", http.StatusNotFound},
+	}
+
 	r := NewEngine()
 
-	w := PerformRequest(r, "GET", "/list")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
-
-	w = PerformRequest(r, "GET", "/down?fn=hello1.txt")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
-
-	w = PerformRequest(r, "GET", "/login")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
-
-	w = PerformRequest(r, "POST", "/login")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
-
-	w = PerformRequest(r, "GET", "/set-password")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
-
-	w = PerformRequest(r, "POST", "/set-password")
-	assert.NotEqual(t, http.StatusNotFound, w.Code)
+	for _, rt := range routetests {
+		w := PerformRequest(r, rt.method, rt.location)
+		assert.NotEqual(t, rt.expectStatusCode, w.Code)
+	}
 }
