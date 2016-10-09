@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"github.com/zeropage/mukgoorm/setting"
-	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -26,8 +25,6 @@ var RootCmd = &cobra.Command{
 		password := setting.GetPassword()
 		password.AdminPassword = adminPassword
 		password.ReadOnlyPassword = readOnlyPassword
-		fmt.Printf(adminPassword)
-		fmt.Printf(readOnlyPassword)
 		setting := setting.GetDirectory()
 		setting.Path = path
 
