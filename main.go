@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -62,13 +61,13 @@ func checkAuthority(c *gin.Context) { //check admin ,otherwise redirect to login
 
 func main() {
 	cmd.RootCmd.Execute()
-
 	r := NewEngine()
 	r.Run()
 }
 
 func NewEngine() *gin.Engine {
 	shareDir := setting.GetDirectory()
+	sharePassword := setting.GetPassword()
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*/*.tmpl")
@@ -83,15 +82,12 @@ func NewEngine() *gin.Engine {
 
 	r.POST("/login", func(c *gin.Context) {
 		password := c.PostForm("password")
-		var adminPassword, readOnlyPassword string
-		file1, _ := os.Open("test.txt")
-		fmt.Fscanln(file1, &adminPassword, &readOnlyPassword)
-		file1.Close()
+
 		var authority Grant
 		switch password {
-		case adminPassword:
+		case sharePassword.AdminPassword:
 			authority = ADMIN
-		case readOnlyPassword:
+		case sharePassword.ReadOnlyPassword:
 			authority = READ_ONLY
 		default:
 			authority = FAIL
@@ -110,9 +106,8 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.POST("/set-password", func(c *gin.Context) {
-		file1, _ := os.Create("test.txt")
-		fmt.Fprint(file1, c.PostForm("adminPassword")+" "+c.PostForm("readOnlyPassword"))
-		file1.Close()
+		sharePassword.AdminPassword = c.PostForm("adminPassword")
+		sharePassword.ReadOnlyPassword = c.PostForm("readOnlyPassword")
 		c.Redirect(http.StatusMovedPermanently, "/login")
 	})
 
