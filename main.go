@@ -5,9 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
+	"io"
+	"os"
 	"net/http"
 	"github.com/gin-gonic/contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/cmd"
 	"github.com/zeropage/mukgoorm/setting"
 )
@@ -21,7 +22,6 @@ const (
 	FAIL Grant = iota
 	ADMIN
 	READ_ONLY
-	"os"
 )
 const SESSION_EXPIRE_TIME int = 1800
 
@@ -65,6 +65,7 @@ func main() {
 	cmd.RootCmd.Execute()
 	r := NewEngine()
 	// FIXME recieve hostname or bind address
+
 	r.Run("localhost:8080")
 }
 
@@ -73,6 +74,7 @@ func NewEngine() *gin.Engine {
 	sharePassword := setting.GetPassword()
 	r := gin.Default()
 
+	r.Static("/list", "./templates/javascript")
 	r.LoadHTMLGlob("templates/*/*.tmpl")
 
 	store := sessions.NewCookieStore([]byte("secret"))

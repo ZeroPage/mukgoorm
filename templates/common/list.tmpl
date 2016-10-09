@@ -1,4 +1,5 @@
 {{template "header"}}
+  <script src="/list/shareLink.js"></script>
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
@@ -23,12 +24,4 @@
         <input type="submit" value="send">
       </div>
     </form>
-
-    <script type="text/javascript">
-      function add(name){
-          //FIXME replace host name with variable
-        var r = alert("localhost:8080/down?fn=" + name);
-        // find  new way to display links
-      }
-    </script>
 {{template "footer"}}
