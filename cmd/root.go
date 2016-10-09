@@ -16,20 +16,28 @@ package cmd
 
 import (
 	"github.com/zeropage/mukgoorm/setting"
-
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{
 	Use: "root",
 	Run: func(cmd *cobra.Command, args []string) {
+		password := setting.GetPassword()
+		password.AdminPassword = adminPassword
+		password.ReadOnlyPassword = readOnlyPassword
+		fmt.Printf(adminPassword)
+		fmt.Printf(readOnlyPassword)
 		setting := setting.GetDirectory()
 		setting.Path = path
+
 	},
 }
 
-var path string
+var path, adminPassword, readOnlyPassword string
 
 func init() {
 	RootCmd.Flags().StringVarP(&path, "dir", "D", "", "directory")
+	RootCmd.Flags().StringVarP(&adminPassword, "admin", "A", "", "Admin_password")
+	RootCmd.Flags().StringVarP(&readOnlyPassword,"readOnly", "R", "", "read_only_password")
 }
