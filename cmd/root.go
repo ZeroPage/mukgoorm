@@ -27,7 +27,6 @@ var RootCmd = &cobra.Command{
 		password.ReadOnlyPassword = readOnlyPassword
 		setting := setting.GetDirectory()
 		setting.Path = path
-
 	},
 }
 
@@ -35,6 +34,6 @@ var path, adminPassword, readOnlyPassword string
 
 func init() {
 	RootCmd.Flags().StringVarP(&path, "dir", "D", "", "directory")
-	RootCmd.Flags().StringVarP(&adminPassword, "admin", "A", "", "Admin_password")
-	RootCmd.Flags().StringVarP(&readOnlyPassword,"readOnly", "R", "", "read_only_password")
+	RootCmd.Flags().StringVarP(&adminPassword, "admin-password", "A", "", "Admin password")
+	RootCmd.Flags().StringVarP(&readOnlyPassword,"read-only-password", "R", "", "read only password")
 }
