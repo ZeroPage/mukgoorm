@@ -10,57 +10,44 @@ import (
 	"net/http"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/zeropage/mukgoorm/cmd"
+	"github.com/zeropage/mukgoorm/grant"
 	"github.com/zeropage/mukgoorm/setting"
 )
 
-// When starting server directory parameter is needed. Else error occurs.
-// Run Command:
-//	go run main.go --dir tmp/dat
-type Grant int
-
-const (
-	FAIL Grant = iota
-	ADMIN
-	READ_ONLY
-)
 const SESSION_EXPIRE_TIME int = 1800
 
-func checkLogin(c *gin.Context) { //check login
+func checkLogin(c *gin.Context) {
 	session := sessions.Default(c)
-	if session.Get("authority") == nil {
+	auth := grant.FromSession(session.Get("authority"))
+
+	authorized, err := grant.AuthorityExist(auth)
+	if !authorized {
 		c.Redirect(http.StatusSeeOther, "/login")
-		return
 	}
-	switch Grant(session.Get("authority").(int)) {
-	//Grant(session.Get("authority")) will cause error: "cannot convert session.Get("authority") (type interface {}) to type Grant: need type assertion"
-	//session.Get("authority").(int) will cause error: "invalid case ADMIN(and READ_ONLY) in switch on session.Get("authority").(int) (mismatched types Grant and int)"
-	case ADMIN:
-		return
-	case READ_ONLY:
-		return
-	default:
+	if err != nil {
+		panic(err)
 		c.Redirect(http.StatusSeeOther, "/login")
 	}
 }
 
-func checkAuthority(c *gin.Context) { //check admin ,otherwise redirect to login or list
+func checkAuthority(c *gin.Context) {
+	checkLogin(c)
+
 	session := sessions.Default(c)
-	if session.Get("authority") == nil {
-		c.Redirect(http.StatusSeeOther, "/login")
-		return
-	}
-	switch Grant(session.Get("authority").(int)) {
-	case FAIL:
-		c.Redirect(http.StatusSeeOther, "/login")
-	case ADMIN:
+	auth := grant.FromSession(session.Get("authority"))
+
+	switch auth {
+	case grant.ADMIN:
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
-		return
-	case READ_ONLY:
+	case grant.READ_ONLY:
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
 		c.Redirect(http.StatusSeeOther, "/list")
 	}
 }
 
+// When starting server directory parameter is needed. Else error occurs.
+// Run Command:
+//	go run main.go --dir tmp/dat
 func main() {
 	cmd.RootCmd.Execute()
 	r := NewEngine()
@@ -70,16 +57,16 @@ func main() {
 }
 
 func NewEngine() *gin.Engine {
-	shareDir := setting.GetDirectory()
-	sharePassword := setting.GetPassword()
 	r := gin.Default()
 
 	r.Static("/list", "./templates/javascript")
 	r.LoadHTMLGlob("templates/*/*.tmpl")
 
-	store := sessions.NewCookieStore([]byte("secret"))
+	shareDir := setting.GetDirectory()
+	sharePassword := setting.GetPassword()
 
-	r.Use(sessions.Sessions("mysession", store))
+	store := sessions.NewCookieStore([]byte("secret"))
+	r.Use(sessions.Sessions("_sess", store))
 
 	r.GET("/login", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "input_password.tmpl", gin.H{})
@@ -88,36 +75,32 @@ func NewEngine() *gin.Engine {
 	r.POST("/login", func(c *gin.Context) {
 		password := c.PostForm("password")
 
-		var authority Grant
-		switch password {
-		case sharePassword.AdminPassword:
-			authority = ADMIN
-		case sharePassword.ReadOnlyPassword:
-			authority = READ_ONLY
-		default:
-			authority = FAIL
-		}
+		authority := grant.FromPassword(password)
 		session := sessions.Default(c)
+		// INFO: if you just put authority which is Grant type, then session save nil....
 		session.Set("authority", int(authority))
-		//if you just put authority which is Grant type, then session save nil....
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
 		session.Save()
-		c.Redirect(http.StatusMovedPermanently, "/list")
+
+		c.Redirect(http.StatusOK, "/list")
 	})
 
 	r.GET("/set-password", func(c *gin.Context) {
 		checkAuthority(c)
+
 		c.HTML(http.StatusOK, "set_password.tmpl", gin.H{})
 	})
 
 	r.POST("/set-password", func(c *gin.Context) {
 		sharePassword.AdminPassword = c.PostForm("adminPassword")
 		sharePassword.ReadOnlyPassword = c.PostForm("readOnlyPassword")
-		c.Redirect(http.StatusMovedPermanently, "/login")
+
+		c.Redirect(http.StatusOK, "/login")
 	})
 
 	r.GET("/list", func(c *gin.Context) {
 		checkLogin(c)
+
 		files, err := ioutil.ReadDir(shareDir.Path)
 		if err != nil {
 			panic(err)
