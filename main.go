@@ -82,7 +82,7 @@ func NewEngine() *gin.Engine {
 		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
 		session.Save()
 
-		c.Redirect(http.StatusOK, "/list")
+		c.Redirect(http.StatusFound, "/list")
 	})
 
 	r.GET("/set-password", func(c *gin.Context) {
@@ -95,7 +95,7 @@ func NewEngine() *gin.Engine {
 		sharePassword.AdminPassword = c.PostForm("adminPassword")
 		sharePassword.ReadOnlyPassword = c.PostForm("readOnlyPassword")
 
-		c.Redirect(http.StatusOK, "/login")
+		c.Redirect(http.StatusSeeOther, "/login")
 	})
 
 	r.GET("/list", func(c *gin.Context) {
