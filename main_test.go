@@ -8,9 +8,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/zeropage/mukgoorm/setting"
-
 	"github.com/stretchr/testify/assert"
+	"github.com/zeropage/mukgoorm/setting"
 )
 
 func initialize() {
