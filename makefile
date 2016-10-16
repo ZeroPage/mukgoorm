@@ -2,6 +2,8 @@ build:
 	go build -o mukgoorm .
 clean:
 	go clean
+install:
+	go get github.com/zeropage/mukgoorm
 test:
 	go test ./...
 server: build
@@ -11,4 +13,4 @@ dev-server:
 install-tools:
 	go get "github.com/bluemir/sentry"
 
-.PONEY: clean build test server dev-server install-tools
+.PONEY: clean build test server dev-server install-tools install
