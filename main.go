@@ -129,11 +129,16 @@ func NewEngine() *gin.Engine {
 	r.GET("/list", func(c *gin.Context) {
 		checkLogin(c)
 
-		files, err := ioutil.ReadDir(shareDir.Path)
-		if err != nil {
-			panic(err)
+		sharedPath := c.Query("dir")
+		if sharedPath == "" {
+			sharedPath = shareDir.Path
 		}
 
+		files, err := getFileInfoAndPath(sharedPath)
+		if err != nil {
+			// TODO(rabierre): Redirect to 404
+			c.Redirect(http.StatusSeeOther, "/list")
+		}
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})
