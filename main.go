@@ -145,7 +145,7 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.GET("/down", func(c *gin.Context) {
-		fileName := fmt.Sprintf("%s/%s", shareDir.Path, c.Query("fn"))
+		fileName := c.Query("dir")
 		file, err := ioutil.ReadFile(fileName)
 		if err != nil {
 			panic(err)
@@ -155,7 +155,7 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.GET("/info", func(c *gin.Context) {
-		fileName := c.Query("fn")
+		fileName := c.Query("dir")
 		file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
 		if err != nil {
 			panic(err)
