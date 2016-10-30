@@ -75,7 +75,7 @@ func checkAuthority(c *gin.Context) {
 
 // When starting server directory parameter is needed. Else error occurs.
 // Run Command:
-//	go run main.go --dir tmp/dat
+//	go run main.go -D tmp/dat -A *PASSWORD* -R *PASSWORD*
 func main() {
 	cmd.RootCmd.Execute()
 	r := NewEngine()
