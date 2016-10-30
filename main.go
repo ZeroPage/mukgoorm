@@ -155,14 +155,14 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.GET("/info", func(c *gin.Context) {
-		fileName := fmt.Sprintf("tmp/dat/%s", c.Query("fn"))
-		file, err := ioutil.ReadFile(fileName)
+		fileName := c.Query("fn")
+		file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
 		if err != nil {
 			panic(err)
 		}
 
-		c.HTML(http.StatusOK, "common/info.tmpl", gin.H{
-			"files": file,
+		c.HTML(http.StatusOK, "info.tmpl", gin.H{
+			"file": file,
 		})
 		// this code is just give url(ex. localhost:8080/list?fn=hello2.txt)
 	})
