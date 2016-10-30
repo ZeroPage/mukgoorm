@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"archive/zip"
+	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -43,6 +45,58 @@ func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 	}))
 	return &files, err
 }
+
+func makeZip(foldername string) error {
+	newfile, err := os.Create(foldername + ".zip")
+  if err != nil {
+		return err
+	}
+  defer newfile.Close()
+
+  zipit := zip.NewWriter(newfile)
+  defer zipit.Close()
+
+  filepath.Walk(foldername, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+    if info.Name() == filepath.Base(foldername) {
+			return nil
+		}
+
+    header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+    header.Name = strings.TrimPrefix(path, foldername)
+
+    if info.IsDir() {
+			header.Name += "/"
+		} else {
+			header.Method = zip.Deflate
+		}
+    writer, err := zipit.CreateHeader(header)
+    if err != nil {
+			return err
+		}
+
+    if info.IsDir() {
+			return nil
+		}
+
+    zipfile, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer zipfile.Close()
+
+		_, err = io.Copy(writer, zipfile)
+		return err
+
+	})
+  return err
+ }
 
 func checkLogin(c *gin.Context) {
 	session := sessions.Default(c)
@@ -146,12 +200,24 @@ func NewEngine() *gin.Engine {
 
 	r.GET("/down", func(c *gin.Context) {
 		fileName := c.Query("dir")
-		file, err := ioutil.ReadFile(fileName)
+		file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
+		fileinfo, err := file.Stat()
+		if fileinfo.IsDir() {
+			err := makeZip(fileName)
+			if err != nil {
+				panic(err)
+			}
+			fileName = fileName + ".zip"
+		}
+		filedata, err := ioutil.ReadFile(fileName)
 		if err != nil {
 			panic(err)
 		}
 
-		c.Data(http.StatusOK, "application/octet-stream", file)
+		c.Data(http.StatusOK, "application/octet-stream", filedata)
+		if fileinfo.IsDir(){
+			os.Remove(fileName)
+		}
 	})
 
 	r.GET("/info", func(c *gin.Context) {
