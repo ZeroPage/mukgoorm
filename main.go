@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -16,6 +17,32 @@ import (
 )
 
 const SESSION_EXPIRE_TIME int = 1800
+
+type FilePathInfo struct {
+	File os.FileInfo
+	Path string
+}
+
+func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
+	files := []FilePathInfo{}
+	err := filepath.Walk(root, filepath.WalkFunc(func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		// Skip base directory
+		if info.Name() == filepath.Base(root) {
+			return nil
+		}
+
+		files = append(files, FilePathInfo{info, path})
+		if info.IsDir() {
+			return filepath.SkipDir
+		}
+		return err
+	}))
+	return &files, err
+}
 
 func checkLogin(c *gin.Context) {
 	session := sessions.Default(c)
@@ -102,11 +129,16 @@ func NewEngine() *gin.Engine {
 	r.GET("/list", func(c *gin.Context) {
 		checkLogin(c)
 
-		files, err := ioutil.ReadDir(shareDir.Path)
-		if err != nil {
-			panic(err)
+		sharedPath := c.Query("dir")
+		if sharedPath == "" {
+			sharedPath = shareDir.Path
 		}
 
+		files, err := getFileInfoAndPath(sharedPath)
+		if err != nil {
+			// TODO(rabierre): Redirect to 404
+			c.Redirect(http.StatusSeeOther, "/list")
+		}
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
 		})

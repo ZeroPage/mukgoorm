@@ -4,9 +4,17 @@
     <ul>
       {{ range .files}}
       <li>
-        <a href="/down?fn={{.Name}}">{{ .Name }}</a>
-        <a href="/down?fn={{.Name}}"><input type="button", name="downlaod" value="download"/></a>
-        <input type="button", name="share" value="share" onClick="add({{.Name}})">
+        {{ if eq .File.Mode.IsDir true }}
+          <a href="/list?dir={{.Path}}">
+        {{ else }}
+          <a href="/info?fn={{.Path}}">
+        {{ end }}
+          {{ .File.Name }}
+        </a>
+        <a href="/down?fn={{.File.Name}}" dir="{{.Path}}">
+          <input type="button", name="downlaod" value="download"/>
+        </a>
+        <input type="button", name="share" value="share" onClick="add({{.File.Name}})">
       </li>
       {{ end }}
     </ul>
