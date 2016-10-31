@@ -65,7 +65,6 @@ func TestAuthoritySuccess(t *testing.T) {
 
 func TestAuthorityFail(t *testing.T) {
 	r := NewEngine()
-
 	w := PerformRequest(r, "GET", "/list")
 	assert.Equal(t, http.StatusSeeOther, w.Code)
 }
@@ -90,6 +89,21 @@ func TestAllRoutesExist(t *testing.T) {
 		w := PerformRequest(r, rt.method, rt.location)
 		assert.NotEqual(t, rt.expectStatusCode, w.Code)
 	}
+}
+
+func TestListSuccess(t *testing.T) {
+	r := NewEngine()
+	w := PerformRequestWithSession(r, "GET", "/list?dir=tmp/dat")
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestListFail(t *testing.T) {
+	r := NewEngine()
+	w := PerformRequestWithSession(r, "GET", "/list?dir=tmp")
+	assert.Equal(t, http.StatusNotFound, w.Code)
+
+	w = PerformRequestWithSession(r, "GET", "/list?dir=/")
+	assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
 func TestGetFileInfoAndPath(t *testing.T) {

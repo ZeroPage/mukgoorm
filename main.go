@@ -132,12 +132,13 @@ func NewEngine() *gin.Engine {
 		sharedPath := c.Query("dir")
 		if sharedPath == "" {
 			sharedPath = shareDir.Path
+		} else if !shareDir.ValidDir(sharedPath) {
+			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
 		}
 
 		files, err := getFileInfoAndPath(sharedPath)
 		if err != nil {
-			// TODO(rabierre): Redirect to 404
-			c.Redirect(http.StatusSeeOther, "/list")
+			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
 		}
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
