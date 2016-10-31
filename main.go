@@ -157,7 +157,7 @@ func NewEngine() *gin.Engine {
 
 	r.GET("/info", func(c *gin.Context) {
 		fileName := c.Query("dir")
-		file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
+		file, err := os.OpenFile(fileName, os.O_RDONLY, 0440)
 		if err != nil {
 			panic(err)
 		}
