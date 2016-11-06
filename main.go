@@ -46,10 +46,10 @@ func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 	return &files, err
 }
 
-func makeZip(foldername string) error {
+func makeZip(foldername string) (string, error) {
 	newfile, err := os.Create(foldername + ".zip")
   if err != nil {
-		return err
+		return "", err
 	}
   defer newfile.Close()
 
@@ -95,7 +95,7 @@ func makeZip(foldername string) error {
 		return err
 
 	})
-  return err
+  return foldername + ".zip", err
  }
 
 func checkLogin(c *gin.Context) {
@@ -199,15 +199,16 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.GET("/down", func(c *gin.Context) {
+		checkAuthority(c)
 		fileName := c.Query("dir")
-		file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
+		file, err := os.OpenFile(fileName, os.O_RDONLY, 0440)
 		fileinfo, err := file.Stat()
 		if fileinfo.IsDir() {
-			err := makeZip(fileName)
+			fileName, err = makeZip(fileName)
 			if err != nil {
 				panic(err)
 			}
-			fileName = fileName + ".zip"
+			defer os.Remove(fileName)
 		}
 		filedata, err := ioutil.ReadFile(fileName)
 		if err != nil {
@@ -215,9 +216,6 @@ func NewEngine() *gin.Engine {
 		}
 
 		c.Data(http.StatusOK, "application/octet-stream", filedata)
-		if fileinfo.IsDir(){
-			os.Remove(fileName)
-		}
 	})
 
 	r.GET("/info", func(c *gin.Context) {
