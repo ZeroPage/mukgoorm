@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"archive/zip"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
-	"archive/zip"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
@@ -48,55 +47,55 @@ func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 
 func makeZip(foldername string) (string, error) {
 	newfile, err := os.Create(foldername + ".zip")
-  if err != nil {
+	if err != nil {
 		return "", err
 	}
-  defer newfile.Close()
+	defer newfile.Close()
 
-  zipit := zip.NewWriter(newfile)
-  defer zipit.Close()
+	zipit := zip.NewWriter(newfile)
+	defer zipit.Close()
 
-  filepath.Walk(foldername, func(path string, info os.FileInfo, err error) error {
+	filepath.Walk(foldername, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
-    if info.Name() == filepath.Base(foldername) {
+		if info.Name() == filepath.Base(foldername) {
 			return nil
 		}
 
-    header, err := zip.FileInfoHeader(info)
+		header, err := zip.FileInfoHeader(info)
 		if err != nil {
 			return err
 		}
-    header.Name = strings.TrimPrefix(path, foldername)
+		header.Name = strings.TrimPrefix(path, foldername)
 
-    if info.IsDir() {
+		if info.IsDir() {
 			header.Name += "/"
 		} else {
 			header.Method = zip.Deflate
 		}
-    writer, err := zipit.CreateHeader(header)
-    if err != nil {
-			return err
-		}
-
-    if info.IsDir() {
-			return nil
-		}
-
-    zipfile, err := os.Open(path)
+		writer, err := zipit.CreateHeader(header)
 		if err != nil {
 			return err
 		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		zipfile, err := os.Open(path)
 		defer zipfile.Close()
+		if err != nil {
+			return err
+		}
 
 		_, err = io.Copy(writer, zipfile)
 		return err
 
 	})
-  return foldername + ".zip", err
- }
+	return newfile.Name(), err
+}
 
 func checkLogin(c *gin.Context) {
 	session := sessions.Default(c)
@@ -187,11 +186,13 @@ func NewEngine() *gin.Engine {
 		if sharedPath == "" {
 			sharedPath = shareDir.Path
 		} else if !shareDir.ValidDir(sharedPath) {
+			log.Infof("Invalid directory access: %s", sharedPath)
 			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
 		}
 
 		files, err := getFileInfoAndPath(sharedPath)
 		if err != nil {
+			log.Error(err)
 			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
 		}
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
@@ -201,8 +202,11 @@ func NewEngine() *gin.Engine {
 
 	r.GET("/down", func(c *gin.Context) {
 		checkAuthority(c)
+
 		fileName := c.Query("dir")
-		file, err := os.OpenFile(fileName, os.O_RDONLY, 0440)
+		file, err := os.Open(fileName)
+		defer file.Close()
+
 		fileinfo, err := file.Stat()
 		if fileinfo.IsDir() {
 			fileName, err = makeZip(fileName)
@@ -211,18 +215,21 @@ func NewEngine() *gin.Engine {
 			}
 			defer os.Remove(fileName)
 		}
+
 		filedata, err := ioutil.ReadFile(fileName)
 		if err != nil {
+			log.Error(err)
 			c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
-			log.Info(err)
 		}
 
 		c.Data(http.StatusOK, "application/octet-stream", filedata)
+
 	})
 
 	r.GET("/info", func(c *gin.Context) {
 		fileName := c.Query("dir")
-		file, err := os.OpenFile(fileName, os.O_RDONLY, 0440)
+		file, err := os.Open(fileName)
+		defer file.Close()
 		if err != nil {
 			panic(err)
 		}
@@ -230,28 +237,27 @@ func NewEngine() *gin.Engine {
 		c.HTML(http.StatusOK, "info.tmpl", gin.H{
 			"file": file,
 		})
-		// this code is just give url(ex. localhost:8080/list?fn=hello2.txt)
 	})
 
 	r.POST("/upload", func(c *gin.Context) {
-
 		file, header, err := c.Request.FormFile("image")
 		if err != nil {
 			panic(err)
 		}
 		filename := header.Filename
-		fmt.Println(header.Filename)
+
 		out, err := os.Create("./tmp/dat/" + filename)
-		if err != nil {
-			log.Fatal(err)
-		}
 		defer out.Close()
+		if err != nil {
+			log.Error(err)
+		}
+
 		_, err = io.Copy(out, file)
 		if err != nil {
-			log.Fatal(err)
+			log.Error(err)
 		}
-		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
 
+		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
 	})
 	return r
 }
