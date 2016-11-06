@@ -51,10 +51,12 @@ func checkLogin(c *gin.Context) {
 	authorized, err := grant.AuthorityExist(auth)
 	if !authorized {
 		c.Redirect(http.StatusSeeOther, "/login")
+		c.Abort()
 	}
 	if err != nil {
 		panic(err)
 		c.Redirect(http.StatusSeeOther, "/login")
+		c.Abort()
 	}
 }
 
@@ -113,9 +115,7 @@ func NewEngine() *gin.Engine {
 		c.Redirect(http.StatusFound, "/list")
 	})
 
-	r.GET("/set-password", func(c *gin.Context) {
-		checkAuthority(c)
-
+	r.GET("/set-password", checkAuthority, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "set_password.tmpl", gin.H{})
 	})
 
@@ -126,8 +126,7 @@ func NewEngine() *gin.Engine {
 		c.Redirect(http.StatusSeeOther, "/login")
 	})
 
-	r.GET("/list", func(c *gin.Context) {
-		checkLogin(c)
+	r.GET("/list", checkLogin, func(c *gin.Context) {
 
 		sharedPath := c.Query("dir")
 		if sharedPath == "" {
