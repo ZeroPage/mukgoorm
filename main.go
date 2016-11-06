@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"archive/zip"
+	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/contrib/sessions"
@@ -43,6 +45,58 @@ func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 	}))
 	return &files, err
 }
+
+func makeZip(foldername string) (string, error) {
+	newfile, err := os.Create(foldername + ".zip")
+  if err != nil {
+		return "", err
+	}
+  defer newfile.Close()
+
+  zipit := zip.NewWriter(newfile)
+  defer zipit.Close()
+
+  filepath.Walk(foldername, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+    if info.Name() == filepath.Base(foldername) {
+			return nil
+		}
+
+    header, err := zip.FileInfoHeader(info)
+		if err != nil {
+			return err
+		}
+    header.Name = strings.TrimPrefix(path, foldername)
+
+    if info.IsDir() {
+			header.Name += "/"
+		} else {
+			header.Method = zip.Deflate
+		}
+    writer, err := zipit.CreateHeader(header)
+    if err != nil {
+			return err
+		}
+
+    if info.IsDir() {
+			return nil
+		}
+
+    zipfile, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer zipfile.Close()
+
+		_, err = io.Copy(writer, zipfile)
+		return err
+
+	})
+  return foldername + ".zip", err
+ }
 
 func checkLogin(c *gin.Context) {
 	session := sessions.Default(c)
@@ -146,14 +200,24 @@ func NewEngine() *gin.Engine {
 	})
 
 	r.GET("/down", func(c *gin.Context) {
+		checkAuthority(c)
 		fileName := c.Query("dir")
-		file, err := ioutil.ReadFile(fileName)
+		file, err := os.OpenFile(fileName, os.O_RDONLY, 0440)
+		fileinfo, err := file.Stat()
+		if fileinfo.IsDir() {
+			fileName, err = makeZip(fileName)
+			if err != nil {
+				panic(err)
+			}
+			defer os.Remove(fileName)
+		}
+		filedata, err := ioutil.ReadFile(fileName)
 		if err != nil {
 			c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 			log.Info(err)
 		}
 
-		c.Data(http.StatusOK, "application/octet-stream", file)
+		c.Data(http.StatusOK, "application/octet-stream", filedata)
 	})
 
 	r.GET("/info", func(c *gin.Context) {
