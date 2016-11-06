@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"strings"
 	"sync"
 )
 
@@ -16,4 +17,11 @@ func GetDirectory() *directory {
 		dir = &directory{}
 	})
 	return dir
+}
+
+func (d *directory) ValidDir(path string) bool {
+	if strings.HasPrefix(path, d.Path) {
+		return true
+	}
+	return false
 }
