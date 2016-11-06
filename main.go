@@ -193,6 +193,7 @@ func NewEngine() *gin.Engine {
 		files, err := getFileInfoAndPath(sharedPath)
 		if err != nil {
 			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
+			log.Fatalf("%v: %s", err, sharedPath)
 		}
 		c.HTML(http.StatusOK, "list.tmpl", gin.H{
 			"files": files,
