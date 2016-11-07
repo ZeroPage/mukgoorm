@@ -152,7 +152,7 @@ func NewEngine() *gin.Engine {
 	r := gin.Default()
 	r.SetHTMLTemplate(templates())
 
-	r.Static("/list", "./templates/javascript")
+	r.StaticFS("/static", rice.MustFindBox("static").HTTPBox())
 
 	shareDir := setting.GetDirectory()
 	sharePassword := setting.GetPassword()
