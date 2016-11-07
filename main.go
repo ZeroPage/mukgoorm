@@ -2,6 +2,8 @@ package main
 
 import (
 	"archive/zip"
+	"fmt"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -9,6 +11,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/GeertJohan/go.rice"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -147,9 +150,9 @@ func main() {
 
 func NewEngine() *gin.Engine {
 	r := gin.Default()
+	r.SetHTMLTemplate(templates())
 
 	r.Static("/list", "./templates/javascript")
-	r.LoadHTMLGlob("templates/*/*.tmpl")
 
 	shareDir := setting.GetDirectory()
 	sharePassword := setting.GetPassword()
@@ -158,7 +161,7 @@ func NewEngine() *gin.Engine {
 	r.Use(sessions.Sessions("_sess", store))
 
 	r.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "input_password.tmpl", gin.H{})
+		c.HTML(http.StatusOK, "authority/input_password.tmpl", gin.H{})
 	})
 
 	r.POST("/login", func(c *gin.Context) {
@@ -200,7 +203,7 @@ func NewEngine() *gin.Engine {
 			log.Error(err)
 			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
 		}
-		c.HTML(http.StatusOK, "list.tmpl", gin.H{
+		c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 			"files": files,
 		})
 	})
@@ -239,7 +242,7 @@ func NewEngine() *gin.Engine {
 			panic(err)
 		}
 
-		c.HTML(http.StatusOK, "info.tmpl", gin.H{
+		c.HTML(http.StatusOK, "common/info.tmpl", gin.H{
 			"file": file,
 		})
 	})
@@ -265,4 +268,25 @@ func NewEngine() *gin.Engine {
 		c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
 	})
 	return r
+}
+func templates() *template.Template {
+	all := template.New("__main__").Funcs(template.FuncMap{})
+	templateBox := rice.MustFindBox("templates")
+	templateBox.Walk("/", func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			return nil
+		}
+		if path[0] == '.' {
+			return nil
+		}
+		template.Must(all.New(path).Parse(templateBox.MustString(path)))
+		return nil
+	})
+
+	str := fmt.Sprintf("Loaded HTML Templates (%d):\n", len(all.Templates()))
+	for _, v := range all.Templates() {
+		str += fmt.Sprintf("\t - %s\n", v.Name())
+	}
+	fmt.Println(str)
+	return all
 }
