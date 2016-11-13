@@ -7,7 +7,7 @@ install:
 test:
 	go test ./...
 server: build
-	./mukgoorm
+	./mukgoorm -D . -A admin -R read
 dev-server:
 	sentry -c "make test && make server" -w "*.go" -w "templates"
 install-tools:
