@@ -195,13 +195,13 @@ func NewEngine() *gin.Engine {
 			sharedPath = shareDir.Path
 		} else if !shareDir.ValidDir(sharedPath) {
 			log.Infof("Invalid directory access: %s", sharedPath)
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
+			c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 		}
 
 		files, err := getFileInfoAndPath(sharedPath)
 		if err != nil {
 			log.Error(err)
-			c.HTML(http.StatusNotFound, "404.tmpl", gin.H{})
+			c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 		}
 		c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 			"files": files,
