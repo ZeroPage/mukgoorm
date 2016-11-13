@@ -134,6 +134,12 @@ func checkAuthority(c *gin.Context) {
 //	go run main.go -D tmp/dat -A *PASSWORD* -R *PASSWORD*
 func main() {
 	cmd.RootCmd.Execute()
+	if setting.GetPassword().AdminPassword == "" {
+		log.Fatal("Admin password must required")
+	}
+	if setting.GetPassword().ReadOnlyPassword == "" {
+		log.Fatal("Admin password must required")
+	}
 	r := NewEngine()
 	// FIXME recieve hostname or bind address
 
