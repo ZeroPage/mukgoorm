@@ -76,7 +76,8 @@ func TestAllRoutesExist(t *testing.T) {
 		expectStatusCode uint32
 	}{
 		{"GET", "/list", http.StatusNotFound},
-		{"GET", "/down?fn=hello1.txt", http.StatusNotFound},
+		// TODO generate from setting
+		{"GET", "/down?dir=tmp/dat/hello1.txt", http.StatusNotFound},
 		{"GET", "/login", http.StatusNotFound},
 		{"POST", "/login", http.StatusNotFound},
 		{"GET", "/set-password", http.StatusNotFound},
