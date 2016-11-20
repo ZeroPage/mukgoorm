@@ -1,5 +1,5 @@
 {{template "header"}}
-  <script src="/static/javascript/shareLink.js"></script>
+<link rel="stylesheet" type="text/css" href="static/css/shareLink.css">
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
@@ -12,12 +12,19 @@
           {{ .File.Name }}
         </a>
         <a href="/down?dir={{.Path}}" dir="{{.Path}}">
-          <input type="button", name="downlaod" value="download"/>
+          <button id="download" name="downlaod">download</button>
         </a>
-        <input type="button", name="share" value="share" onClick="add({{.File.Name}})">
+          <button id="share" name="share">share</button>
+          <div id="shareModal" class="modal">
+            <div class="modal-content">
+              <span class="close">x</span>
+              <p>localhost:8080/down?fn={{.File.Name}}</p>
+            </div>
+          </div>
       </li>
       {{ end }}
     </ul>
+    <script src="/static/javascript/sharelink.js"></script>
 
     <form action="/upload" enctype="multipart/form-data" method="post">
       <p>
