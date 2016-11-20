@@ -25,19 +25,10 @@ func FromPassword(password string) Grant {
 	}
 }
 
-func FromSession(sessionVal interface{}) Grant {
+func FromSession(sessionVal interface{}) (Grant, bool) {
 	val, ok := sessionVal.(int)
 	if !ok {
-		return FAIL
+		return FAIL, false
 	}
-	return Grant(val)
-}
-
-func AuthorityExist(grant Grant) (bool, error) {
-	switch grant {
-	case ADMIN, READ_ONLY:
-		return true, nil
-	default:
-		return false, nil
-	}
+	return Grant(val), true
 }

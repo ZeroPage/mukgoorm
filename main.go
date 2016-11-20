@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/cmd"
+	"github.com/zeropage/mukgoorm/grant"
 	"github.com/zeropage/mukgoorm/handlers"
 	"github.com/zeropage/mukgoorm/setting"
 )
@@ -44,13 +45,16 @@ func NewEngine() *gin.Engine {
 	r.GET("/login", handlers.LoginForm)
 	r.POST("/login", handlers.Login)
 
-	r.GET("/set-password", handlers.CheckAuthority, handlers.SetPasswordForm)
-	r.POST("/set-password", handlers.CheckAuthority, handlers.SetPassword)
+	loginedRoute := r.Group("/", handlers.CheckLogin)
 
-	r.GET("/list", handlers.CheckLogin, handlers.List)
-	r.GET("/down", handlers.CheckAuthority, handlers.Down)
-	r.GET("/info", handlers.Info)
-	r.POST("/upload", handlers.Upload)
+	loginedRoute.GET("/set-password", handlers.CheckRole(grant.ADMIN), handlers.SetPasswordForm)
+	loginedRoute.POST("/set-password", handlers.CheckRole(grant.ADMIN), handlers.SetPassword)
+
+	loginedRoute.GET("/list", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.List)
+	loginedRoute.GET("/down", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Down)
+	loginedRoute.GET("/info", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Info)
+	loginedRoute.POST("/upload", handlers.CheckRole(grant.ADMIN), handlers.Upload)
+
 	return r
 }
 func templates() *template.Template {
