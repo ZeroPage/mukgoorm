@@ -30,6 +30,7 @@ func List(c *gin.Context) {
 		"files": files,
 	})
 }
+
 func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 	files := []FilePathInfo{}
 	err := filepath.Walk(root, filepath.WalkFunc(func(path string, info os.FileInfo, err error) error {
@@ -38,7 +39,7 @@ func getFileInfoAndPath(root string) (*[]FilePathInfo, error) {
 		}
 
 		// Skip base directory
-		if info.Name() == filepath.Base(root) {
+		if path == root {
 			return nil
 		}
 
