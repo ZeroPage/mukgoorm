@@ -1,9 +1,11 @@
 package main
 
 import (
+	"runtime"
 	"fmt"
 	"html/template"
 	"os"
+	"strings"
 
 	"github.com/GeertJohan/go.rice"
 	log "github.com/Sirupsen/logrus"
@@ -62,7 +64,12 @@ func templates() *template.Template {
 		if path[0] == '.' {
 			return nil
 		}
-		template.Must(all.New(path).Parse(templateBox.MustString(path)))
+		wpath := path
+		if runtime.GOOS == "windows"{
+			splited := strings.Split(path, "\\")
+			wpath = strings.Join(splited, "/")
+		}
+		template.Must(all.New(wpath).Parse(templateBox.MustString(path)))
 		return nil
 	})
 

@@ -8,7 +8,7 @@ import (
 )
 
 func SetPasswordForm(c *gin.Context) {
-	c.HTML(http.StatusOK, "set_password.tmpl", gin.H{})
+	c.HTML(http.StatusOK, "authority/set_password.tmpl", gin.H{})
 }
 
 func SetPassword(c *gin.Context) {

@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -20,7 +21,7 @@ func GetDirectory() *directory {
 }
 
 func (d *directory) ValidDir(path string) bool {
-	if strings.HasPrefix(path, d.Path) {
+	if strings.HasPrefix(filepath.ToSlash(path), filepath.ToSlash(d.Path)) {
 		return true
 	}
 	return false
