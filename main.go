@@ -48,13 +48,15 @@ func NewEngine() *gin.Engine {
 	loginedRoute := r.Group("/", handlers.CheckLogin)
 
 	loginedRoute.GET("/", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.List)
-	loginedRoute.GET("/info", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Info)
 
 	loginedRoute.GET("/set-password", handlers.CheckRole(grant.ADMIN), handlers.SetPasswordForm)
 	loginedRoute.POST("/set-password", handlers.CheckRole(grant.ADMIN), handlers.SetPassword)
 
+	loginedRoute.GET("/list", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.List)
 	loginedRoute.GET("/down", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Down)
+	loginedRoute.GET("/info", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Info)
 	loginedRoute.POST("/upload", handlers.CheckRole(grant.ADMIN), handlers.Upload)
+	loginedRoute.DELETE("/delete", handlers.CheckRole(grant.ADMIN), handlers.Delete)
 
 	return r
 }

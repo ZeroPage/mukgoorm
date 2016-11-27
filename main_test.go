@@ -82,6 +82,7 @@ func TestAllRoutesExist(t *testing.T) {
 		{"POST", "/login", http.StatusNotFound},
 		{"GET", "/set-password", http.StatusNotFound},
 		{"POST", "/set-password", http.StatusNotFound},
+		{"DELETE", "/delete", http.StatusNotFound},
 	}
 
 	r := NewEngine()
