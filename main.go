@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"path/filepath"
 
 	"github.com/GeertJohan/go.rice"
 	log "github.com/Sirupsen/logrus"
@@ -62,7 +63,8 @@ func templates() *template.Template {
 		if path[0] == '.' {
 			return nil
 		}
-		template.Must(all.New(path).Parse(templateBox.MustString(path)))
+		slashedPath := filepath.ToSlash(path)
+		template.Must(all.New(slashedPath).Parse(templateBox.MustString(path)))
 		return nil
 	})
 

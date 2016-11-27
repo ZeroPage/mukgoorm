@@ -33,7 +33,8 @@ func Down(c *gin.Context) {
 		log.Error(err)
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 	}
-
+	_, fileName = filepath.Split(fileName)
+	c.Writer.Header().Set("content-disposition", "attachment; filename=" + fileName)
 	c.Data(http.StatusOK, "application/octet-stream", filedata)
 
 }
@@ -51,10 +52,6 @@ func makeZip(foldername string) (string, error) {
 	filepath.Walk(foldername, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
-		}
-
-		if info.Name() == filepath.Base(foldername) {
-			return nil
 		}
 
 		header, err := zip.FileInfoHeader(info)
