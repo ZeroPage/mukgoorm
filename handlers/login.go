@@ -22,5 +22,5 @@ func Login(c *gin.Context) {
 	session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
 	session.Save()
 
-	c.Redirect(http.StatusFound, "/list")
+	c.Redirect(http.StatusFound, "/")
 }

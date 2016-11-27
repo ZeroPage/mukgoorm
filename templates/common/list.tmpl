@@ -13,7 +13,7 @@
       {{ range .files}}
       <li>
         {{ if eq .File.Mode.IsDir true }}
-          <a class="file-link" href="/list?dir={{.Path}}">
+          <a class="file-link" href="/?dir={{.Path}}">
         {{ else }}
           <a class="file-link" href="/info?dir={{.Path}}">
         {{ end }}

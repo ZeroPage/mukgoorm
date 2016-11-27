@@ -59,13 +59,13 @@ func PerformRequestWithSession(r http.Handler, method, path string) *httptest.Re
 func TestAuthoritySuccess(t *testing.T) {
 	r := NewEngine()
 
-	w := PerformRequestWithSession(r, "GET", "/list")
+	w := PerformRequestWithSession(r, "GET", "/")
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 func TestAuthorityFail(t *testing.T) {
 	r := NewEngine()
-	w := PerformRequest(r, "GET", "/list")
+	w := PerformRequest(r, "GET", "/")
 	assert.Equal(t, http.StatusSeeOther, w.Code)
 }
 
@@ -75,7 +75,7 @@ func TestAllRoutesExist(t *testing.T) {
 		location         string
 		expectStatusCode uint32
 	}{
-		{"GET", "/list", http.StatusNotFound},
+		{"GET", "/", http.StatusNotFound},
 		// TODO generate from setting
 		{"GET", "/down?dir=tmp/dat/hello1.txt", http.StatusNotFound},
 		{"GET", "/login", http.StatusNotFound},
@@ -94,15 +94,15 @@ func TestAllRoutesExist(t *testing.T) {
 
 func TestListSuccess(t *testing.T) {
 	r := NewEngine()
-	w := PerformRequestWithSession(r, "GET", "/list?dir=tmp/dat")
+	w := PerformRequestWithSession(r, "GET", "/?dir=tmp/dat")
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 func TestListFail(t *testing.T) {
 	r := NewEngine()
-	w := PerformRequestWithSession(r, "GET", "/list?dir=tmp")
+	w := PerformRequestWithSession(r, "GET", "/?dir=tmp")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 
-	w = PerformRequestWithSession(r, "GET", "/list?dir=/")
+	w = PerformRequestWithSession(r, "GET", "/?dir=/")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 }
