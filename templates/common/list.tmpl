@@ -1,30 +1,31 @@
 {{template "header"}}
+<script src="/static/javascript/sharelink.js"></script>
 <link rel="stylesheet" type="text/css" href="static/css/shareLink.css">
+<div id="share-modal" class="modal">
+  <div class="share-modal-content">
+    <span id="close-modal-btn">x</span>
+    <p class="link-holder"></p>
+  </div>
+</div>
+
     <p>Number of files: {{ len .files }}</p>
     <ul>
       {{ range .files}}
       <li>
         {{ if eq .File.Mode.IsDir true }}
-          <a href="/list?dir={{.Path}}">
+          <a class="file-link" href="/list?dir={{.Path}}">
         {{ else }}
-          <a href="/info?dir={{.Path}}">
+          <a class="file-link" href="/info?dir={{.Path}}">
         {{ end }}
           {{ .File.Name }}
         </a>
         <a href="/down?dir={{.Path}}" dir="{{.Path}}">
           <button id="download" name="downlaod">download</button>
         </a>
-          <button id="share" name="share">share</button>
-          <div id="shareModal" class="modal">
-            <div class="modal-content">
-              <span class="close">x</span>
-              <p>localhost:8080/down?fn={{.File.Name}}</p>
-            </div>
-          </div>
+          <button id="share-btn" name="share">share</button>
       </li>
       {{ end }}
     </ul>
-    <script src="/static/javascript/shareLink.js"></script>
 
     <form action="/upload" enctype="multipart/form-data" method="post">
       <p>
