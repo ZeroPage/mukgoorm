@@ -13,16 +13,12 @@
     {{ range .files}}
       <li>
         {{ if eq .File.Mode.IsDir true }}
-          <a class="file-link" href="/?dir={{.Path}}">
+          <a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
         {{ else }}
-          <a class="file-link" href="/info?dir={{.Path}}">
+          <a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
         {{ end }}
-          {{ .File.Name }}
-        </a>
-        <a href="/down?dir={{.Path}}" dir="{{.Path}}">
-          <button class="download" name="downlaod">download</button>
-        </a>
-        <button class="share-btn" name="share">share</button>
+        <a href="/down?dir={{.Path}}" dir="{{.Path}}">download</a>
+        <button id="share-btn" name="share">share</button>
         <button onclick="remove({{.Path}})">delete</button>
       </li>
     {{ end }}
