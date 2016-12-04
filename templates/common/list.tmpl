@@ -1,16 +1,16 @@
 {{template "header"}}
-<script src="/static/javascript/sharelink.js"></script>
-<link rel="stylesheet" type="text/css" href="static/css/shareLink.css">
-<div id="share-modal" class="modal">
-  <div class="share-modal-content">
-    <span id="close-modal-btn">x</span>
-    <p class="link-holder"></p>
+  <script src="/static/javascript/list.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
+  <div id="share-modal" class="modal">
+    <div class="share-modal-content">
+      <span id="close-modal-btn">x</span>
+      <p class="link-holder"></p>
+    </div>
   </div>
-</div>
 
-    <p>Number of files: {{ len .files }}</p>
-    <ul>
-      {{ range .files}}
+  <p>Number of files: {{ len .files }}</p>
+  <ul>
+    {{ range .files}}
       <li>
         {{ if eq .File.Mode.IsDir true }}
           <a class="file-link" href="/?dir={{.Path}}">
@@ -23,21 +23,18 @@
           <button id="download" name="downlaod">download</button>
         </a>
           <button id="share-btn" name="share">share</button>
+          <button onclick="remove({{.Path}})">delete</button>
       </li>
-      {{ end }}
-    </ul>
+    {{ end }}
+  </ul>
 
-    <form action="/upload" enctype="multipart/form-data" method="post">
-      <p>
-        type some text(optionally):<br>
-        <input type="text" name="textline" size="30">
-      </p>
-      <p>
-        please specify a file, or a set of files: <br>
-        <input type="file", name="image" size="40">
-      </p>
-      <div>
-        <input type="submit" value="send">
-      </div>
-    </form>
+  <form action="/upload" enctype="multipart/form-data" method="post">
+    <p>
+      please specify a file, or a set of files: <br>
+      <input type="file", name="image" size="40">
+    </p>
+    <div>
+      <input type="submit" value="send">
+    </div>
+  </form>
 {{template "footer"}}
