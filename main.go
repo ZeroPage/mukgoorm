@@ -27,6 +27,9 @@ func main() {
 	if setting.GetPassword().ReadOnlyPassword == "" {
 		log.Fatal("Admin password must required")
 	}
+	if setting.GetDirectory().Path == "" {
+		log.Fatal("You need to set directory")
+	}
 	r := NewEngine()
 	// FIXME recieve hostname or bind address
 
