@@ -8,17 +8,16 @@ import (
 	"github.com/zeropage/mukgoorm/grant"
 )
 
+const SESSION_EXPIRE_TIME int = 1800
+
 func CheckLogin(c *gin.Context) {
 	session := sessions.Default(c)
-	auth := grant.FromSession(session.Get("authority"))
 
-	authorized, err := grant.AuthorityExist(auth)
-	if !authorized {
-		c.Redirect(http.StatusSeeOther, "/login")
-		c.Abort()
-	}
-	if err != nil {
-		panic(err)
+	if auth, ok := grant.FromSession(session.Get("authority")); ok {
+		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
+		c.Set("authority", auth)
+		return
+	} else {
 		c.Redirect(http.StatusSeeOther, "/login")
 		c.Abort()
 	}
