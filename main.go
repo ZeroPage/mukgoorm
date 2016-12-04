@@ -64,7 +64,7 @@ func templates() *template.Template {
 		if info.IsDir() {
 			return nil
 		}
-		if path[0] == '.' {
+		if info.Name()[0] == '.' {
 			return nil
 		}
 		slashedPath := filepath.ToSlash(path)
