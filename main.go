@@ -20,20 +20,24 @@ import (
 // Run Command:
 //	go run main.go -D tmp/dat -A *PASSWORD* -R *PASSWORD*
 func main() {
+	CheckStartOptions()
+	r := NewEngine()
+
+	// FIXME recieve hostname or bind address
+	r.Run("localhost:8080")
+}
+
+func CheckStartOptions() {
 	cmd.RootCmd.Execute()
 	if setting.GetPassword().AdminPassword == "" {
-		log.Fatal("Admin password must required")
+		log.Panic("Admin password must required")
 	}
 	if setting.GetPassword().ReadOnlyPassword == "" {
-		log.Fatal("Admin password must required")
+		log.Panic("ReadOnly password must required")
 	}
-	if setting.GetDirectory().Path == "" {
-		log.Fatal("You need to set directory")
+	if dir := setting.GetDirectory(); dir.Path == "" || dir.Path == "." {
+		log.Panicf("You need to set directory: %s", dir.Path)
 	}
-	r := NewEngine()
-	// FIXME recieve hostname or bind address
-
-	r.Run("localhost:8080")
 }
 
 func NewEngine() *gin.Engine {
