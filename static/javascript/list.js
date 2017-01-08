@@ -2,6 +2,12 @@ window.onload = function() {
     var modal = document.getElementById('share-modal');
     var closeBtn = document.getElementById('close-modal-btn');
     var shareBtns = document.getElementsByClassName('share-btn');
+    var copyToCB = document.getElementById('copy-btn');
+
+    copyToCB.onclick = function(event){
+      var link = document.querySelector(".link-holder");
+      var sucessful = document.execCommand('copy');
+    }
 
     closeBtn.onclick = function(){
         modal.style.display = "none";
@@ -9,8 +15,8 @@ window.onload = function() {
 
     Array.from(shareBtns).forEach(function(element) {
         element.onclick = function(event) {
-            link = event.target.parentElement.getElementsByClassName("file-link")[0].href
-            modal.getElementsByClassName("link-holder")[0].textContent = link
+            link = event.target.parentElement.getElementsByClassName("file-link")[0].href;
+            modal.getElementsByClassName("link-holder")[0].textContent = link;
             modal.style.display = "block";
         }
     });
