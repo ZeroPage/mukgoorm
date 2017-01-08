@@ -13,10 +13,20 @@ window.onload = function() {
         modal.style.display = "none";
     }
 
+    // TODO coqy button
+    copyToCB.onclick = function(event) {
+        var link = document.querySelector(".link-holder-text");
+        link.select();
+        var successful = document.execCommand('copy');
+        console.log(successful);
+    }
+
     Array.from(shareBtns).forEach(function(element) {
         element.onclick = function(event) {
             link = event.target.parentElement.getElementsByClassName("file-link")[0].href;
-            modal.getElementsByClassName("link-holder")[0].textContent = link;
+
+            //modal.getElementsByClassName("link-holder")[0].textConten1t = link;
+            modal.getElementsByClassName("link-holder-text")[0].textContent = link;
             modal.style.display = "block";
         }
     });
