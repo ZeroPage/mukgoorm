@@ -20,10 +20,10 @@
           {{ .File.Name }}
         </a>
         <a href="/down?dir={{.Path}}" dir="{{.Path}}">
-          <button id="download" name="downlaod">download</button>
+          <button class="download" name="downlaod">download</button>
         </a>
-          <button id="share-btn" name="share">share</button>
-          <button onclick="remove({{.Path}})">delete</button>
+        <button class="share-btn" name="share">share</button>
+        <button onclick="remove({{.Path}})">delete</button>
       </li>
     {{ end }}
   </ul>
