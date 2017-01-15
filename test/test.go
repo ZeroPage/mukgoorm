@@ -1,42 +1,15 @@
-package handlers
+package main
 
 import (
-	"archive/zip"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"os"
+  "archive/zip"
+  "os"
 	"path/filepath"
-	"strings"
-
-	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/gin"
+  "io"
+  "strings"
 )
 
-func Down(c *gin.Context) {
-
-	fileName := c.Query("dir")
-	file, err := os.Open(fileName)
-	defer file.Close()
-
-	fileinfo, err := file.Stat()
-	if fileinfo.IsDir() {
-		fileName, err = makeZip(fileName)
-		if err != nil {
-			panic(err)
-		}
-		defer os.Remove(fileName)
-	}
-
-	filedata, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		log.Error(err)
-		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
-	}
-	_, fileName = filepath.Split(fileName)
-	c.Writer.Header().Set("content-disposition", "attachment; filename=" + fileName)
-	c.Data(http.StatusOK, "application/octet-stream", filedata)
-
+func main(){
+  os.Mkdir("./test", 0777)
 }
 
 func makeZip(foldername string) (string, error) {
@@ -58,15 +31,16 @@ func makeZip(foldername string) (string, error) {
 		if err != nil {
 			return err
 		}
-		_, name := filepath.Split(foldername)
+    _, name := filepath.Split(foldername)
     header.Name = name
     header.Name += strings.TrimPrefix(path, foldername)
 
 
-		if !info.IsDir() {
+		if info.IsDir() {
+
+		} else {
 			header.Method = zip.Deflate
 		}
-		
 		writer, err := zipit.CreateHeader(header)
 		if err != nil {
 			return err
