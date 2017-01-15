@@ -8,6 +8,7 @@ import (
 	"sync"
 	"testing"
 
+
 	"github.com/stretchr/testify/assert"
 	"github.com/zeropage/mukgoorm/setting"
 )
@@ -54,6 +55,17 @@ func PerformRequestWithSession(r http.Handler, method, path string) *httptest.Re
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return w
+}
+
+
+func TestStartOption(t *testing.T){
+  defer func() {
+    if r := recover(); r != nil {
+      assert.NotNil(t, r)
+    }
+  }()
+
+  main()
 }
 
 func TestAuthoritySuccess(t *testing.T) {
