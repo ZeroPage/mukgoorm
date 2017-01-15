@@ -12,10 +12,10 @@ func SetPasswordForm(c *gin.Context) {
 }
 
 func SetPassword(c *gin.Context) {
-	sharePassword := setting.GetPassword()
+	shared := setting.GetPassword()
 
-	sharePassword.AdminPassword = c.PostForm("adminPassword")
-	sharePassword.ReadOnlyPassword = c.PostForm("readOnlyPassword")
+	shared.AdminPwd = c.PostForm("admin")
+	shared.ROnlyPwd = c.PostForm("readOnly")
 
 	c.Redirect(http.StatusSeeOther, "/login")
 }

@@ -11,21 +11,22 @@ import (
 )
 
 func List(c *gin.Context) {
-	shareDir := setting.GetDirectory()
+	shared := setting.GetDirectory()
 
-	sharedPath := c.Query("dir")
-	if sharedPath == "" {
-		sharedPath = shareDir.Path
-	} else if !shareDir.ValidDir(sharedPath) {
-		log.Infof("Invalid directory access: %s", sharedPath)
+	dir := c.Query("dir")
+	if dir == "" {
+		dir = shared.Path
+	} else if !shared.Valid(dir) {
+		log.Warnf("Invalid directory access: %s", dir)
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 	}
 
-	files, err := getFileInfoAndPath(sharedPath)
+	files, err := getFileInfoAndPath(dir)
 	if err != nil {
 		log.Error(err)
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 	}
+
 	c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 		"files": files,
 	})

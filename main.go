@@ -29,10 +29,10 @@ func main() {
 
 func CheckStartOptions() {
 	cmd.RootCmd.Execute()
-	if setting.GetPassword().AdminPassword == "" {
+	if setting.GetPassword().AdminPwd == "" {
 		log.Panic("Admin password must required")
 	}
-	if setting.GetPassword().ReadOnlyPassword == "" {
+	if setting.GetPassword().ROnlyPwd == "" {
 		log.Panic("ReadOnly password must required")
 	}
 	if dir := setting.GetDirectory(); dir.Path == "" || dir.Path == "." {

@@ -9,13 +9,14 @@ import (
 	"github.com/zeropage/mukgoorm/setting"
 )
 
-// Pre: target exist in rootDir
-// Post: target is deleted from rootDir
+// Pre: target exist in shared directory
+// Post: target is deleted from shared directory
+//
 func Delete(c *gin.Context) {
 	target := c.Query("dir")
-	rootDir := setting.GetDirectory()
+	shared := setting.GetDirectory()
 
-	if rootDir.ValidDir(target) == false {
+	if shared.Valid(target) == false {
 		log.Warnf("File Not Exist: %s", target)
 		c.JSON(http.StatusNotFound, gin.H{"error": "File/Path don't exist."})
 	}
