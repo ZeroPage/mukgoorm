@@ -13,8 +13,12 @@ import (
 )
 
 func initialize() {
-	setting := setting.GetDirectory()
-	setting.Path = "tmp/dat"
+	dir := setting.GetDirectory()
+	dir.Path = "tmp/dat"
+
+	pwd := setting.GetPassword()
+	pwd.AdminPassword = "admin"
+	pwd.ReadOnlyPassword = "readonly"
 }
 
 var session string
@@ -27,8 +31,11 @@ func initializeSession() {
 		r := NewEngine()
 
 		data := url.Values{}
-		data.Set("password", "admin") // TODO password can be changed
+		pwd := setting.GetPassword()
+		data.Set("password", pwd.AdminPassword)
 		req, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+
 		w := httptest.NewRecorder()
 		r.ServeHTTP(w, req)
 
