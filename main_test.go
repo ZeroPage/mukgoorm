@@ -9,12 +9,13 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/zeropage/mukgoorm/cmd"
 	"github.com/zeropage/mukgoorm/setting"
 )
 
 func initialize() {
-	setting := setting.GetDirectory()
-	setting.Path = "tmp/dat"
+	dir := setting.GetDirectory()
+	dir.Path = "tmp/dat"
 }
 
 var session string
@@ -106,4 +107,19 @@ func TestListFail(t *testing.T) {
 
 	w = PerformRequestWithSession(r, "GET", "/?dir=/")
 	assert.Equal(t, http.StatusNotFound, w.Code)
+}
+
+func TestCheckStartOptionsFail(t *testing.T) {
+	defer func() {
+		r := recover()
+		assert.NotNil(t, r)
+	}()
+
+	for _, args := range [][]string{
+		{"-A 1234", "-R 1234"},
+		{"-A 1234", "-D tmp/dat"},
+		{"-R 1234", "-D tmp/dat"}} {
+		cmd.RootCmd.SetArgs(args)
+		main()
+	}
 }
