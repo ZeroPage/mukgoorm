@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
-	"sync"
+	"os"
+	"path"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,25 +25,21 @@ func initialize() {
 }
 
 var session string
-var once sync.Once
 
-func initializeSession() {
-	once.Do(func() {
-		initialize()
+func init() {
+	initialize()
 
-		r := NewEngine()
+	r := NewEngine()
 
-		data := url.Values{}
-		pwd := setting.GetPassword()
-		data.Set("password", pwd.AdminPassword)
-		req, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
-		req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	data := url.Values{}
+	pwd := setting.GetPassword()
+	data.Set("password", pwd.AdminPassword)
+	req, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
 
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-
-		session = w.Header().Get("Set-Cookie")
-	})
+	session = w.Header().Get("Set-Cookie")
 }
 
 // This code came from gin-gonic/gin/routes_test.go
@@ -55,8 +53,6 @@ func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecor
 }
 
 func PerformRequestWithSession(r http.Handler, method, path string) *httptest.ResponseRecorder {
-	initializeSession()
-
 	req, _ := http.NewRequest(method, path, nil)
 	req.Header.Add("Cookie", session)
 	w := httptest.NewRecorder()
@@ -129,4 +125,20 @@ func TestCheckStartOptionsFail(t *testing.T) {
 		cmd.RootCmd.SetArgs(args)
 		main()
 	}
+}
+
+func TestDelete(t *testing.T) {
+	dir := path.Join(setting.GetDirectory().Path, "deletefile")
+	if _, err := os.Create(dir); err != nil {
+		t.Fatalf("Fail to create file: %s, %v", dir, err)
+	}
+
+	r := NewEngine()
+	loc := fmt.Sprintf("/delete?dir=%s", dir)
+
+	w := PerformRequestWithSession(r, "DELETE", loc)
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	w = PerformRequestWithSession(r, "DELETE", loc)
+	assert.Equal(t, http.StatusNotFound, w.Code)
 }
