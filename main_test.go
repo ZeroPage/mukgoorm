@@ -17,7 +17,7 @@ import (
 
 func initialize() {
 	dir := setting.GetDirectory()
-	dir.Path = "tmp/dat"
+	dir.Path = "testdata"
 
 	pwd := setting.GetPassword()
 	pwd.AdminPassword = "admin"
@@ -81,7 +81,7 @@ func TestAllRoutesExist(t *testing.T) {
 	}{
 		{"GET", "/", http.StatusNotFound},
 		// TODO generate from setting
-		{"GET", "/down?dir=tmp/dat/hello1.txt", http.StatusNotFound},
+		{"GET", fmt.Sprintf("/down?dir=%s", setting.GetDirectory().Path), http.StatusNotFound},
 		{"GET", "/login", http.StatusNotFound},
 		{"POST", "/login", http.StatusNotFound},
 		{"GET", "/set-password", http.StatusNotFound},
@@ -99,16 +99,16 @@ func TestAllRoutesExist(t *testing.T) {
 
 func TestListSuccess(t *testing.T) {
 	r := NewEngine()
-	w := PerformRequestWithSession(r, "GET", "/?dir=tmp/dat")
+
+	loc := fmt.Sprintf("/?dir=%s", setting.GetDirectory().Path)
+	w := PerformRequestWithSession(r, "GET", loc)
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
 func TestListFail(t *testing.T) {
 	r := NewEngine()
-	w := PerformRequestWithSession(r, "GET", "/?dir=tmp")
-	assert.Equal(t, http.StatusNotFound, w.Code)
 
-	w = PerformRequestWithSession(r, "GET", "/?dir=/")
+	w := PerformRequestWithSession(r, "GET", "/?dir=/")
 	assert.Equal(t, http.StatusNotFound, w.Code)
 }
 
