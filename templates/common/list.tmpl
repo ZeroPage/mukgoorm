@@ -19,7 +19,7 @@
           <a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
         {{ end }}
         <a href="/down?dir={{.Path}}" dir="{{.Path}}">download</a>
-        <button id="share-btn" name="share">share</button>
+        <button class="share-btn" name="share">share</button>
         <button onclick="remove({{.Path}})">delete</button>
       </li>
     {{ end }}
