@@ -3,21 +3,19 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/grant"
+	"github.com/zeropage/mukgoorm/session"
 )
 
-const SESSION_EXPIRE_TIME int = 1800
-
 func CheckLogin(c *gin.Context) {
-	session := sessions.Default(c)
+	sess, _ := session.GlobalSessions.SessionStart(c.Writer, c.Request)
+	defer sess.SessionRelease(c.Writer)
 
-	if auth, ok := grant.FromSession(session.Get("authority")); ok {
-		session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
+	if auth, ok := grant.FromSession(sess.Get("authority")); ok {
 		c.Set("authority", auth)
-		return
 	} else {
+		session.GlobalSessions.SessionDestroy(c.Writer, c.Request)
 		c.Redirect(http.StatusSeeOther, "/login")
 		c.Abort()
 	}

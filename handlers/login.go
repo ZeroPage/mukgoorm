@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/grant"
+	"github.com/zeropage/mukgoorm/session"
 )
 
 func LoginForm(c *gin.Context) {
@@ -14,13 +14,12 @@ func LoginForm(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	password := c.PostForm("password")
-
 	authority := grant.FromPassword(password)
-	session := sessions.Default(c)
+
+	sess, _ := session.GlobalSessions.SessionStart(c.Writer, c.Request)
+	defer sess.SessionRelease(c.Writer)
 	// INFO: if you just put authority which is Grant type, then session save nil....
-	session.Set("authority", int(authority))
-	session.Options(sessions.Options{MaxAge: SESSION_EXPIRE_TIME})
-	session.Save()
+	sess.Set("authority", int(authority))
 
 	c.Redirect(http.StatusFound, "/")
 }
