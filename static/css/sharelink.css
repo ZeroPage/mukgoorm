@@ -28,6 +28,17 @@
   overflow: auto;
 }
 
+.submit-file{
+  position: fixed;
+  float: right;
+  right: 20px;
+  bottom: 20px;
+  width: 120px;
+  height: 90px;
+  color: white;
+  background-color: red;
+}
+
 #close-modal-btn {
     color: #aaaaaa;
     float: right;
