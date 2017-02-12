@@ -24,14 +24,14 @@
       </li>
     {{ end }}
   </ul>
-
+  <!-- 이 기능을 새로운 창으로 띄우도록 고민해보자. -->
   <form action="/upload" enctype="multipart/form-data" method="post">
     <p>
       please specify a file, or a set of files: <br>
       <input type="file", name="image" size="40">
     </p>
     <div>
-      <input type="submit" value="send">
+      <button class="submit-file" value="send">send</button>
     </div>
   </form>
 {{template "footer"}}
