@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zeropage/mukgoorm/session"
 	"github.com/zeropage/mukgoorm/setting"
 )
 
@@ -16,6 +17,8 @@ func SetPassword(c *gin.Context) {
 
 	sharePassword.AdminPassword = c.PostForm("adminPassword")
 	sharePassword.ReadOnlyPassword = c.PostForm("readOnlyPassword")
+
+	session.ClearSessions()
 
 	c.Redirect(http.StatusSeeOther, "/login")
 }
