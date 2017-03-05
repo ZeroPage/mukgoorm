@@ -4,8 +4,16 @@ window.onload = function() {
     var shareBtns = document.getElementsByClassName('share-btn');
     var copyToCB = document.getElementById('copy-btn');
 
+    var uploadModal = document.getElementById('upload-modal');
+    var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
+    var uploadBtn = document.getElementsByClassName('submit-file')[0];
+
     closeBtn.onclick = function(){
         modal.style.display = "none";
+    }
+
+    closeUploadModalBtn.onclick = function() {
+        uploadModal.style.display = "none";
     }
 
     // TODO copy button
@@ -13,6 +21,10 @@ window.onload = function() {
         var link = document.querySelector(".link-holder-text");
         link.select();
         var successful = document.execCommand('copy');
+    }
+
+    uploadBtn.onclick = function(event) {
+      uploadModal.style.display = "block";
     }
 
     Array.from(shareBtns).forEach(function(element) {

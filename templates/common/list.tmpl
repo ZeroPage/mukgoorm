@@ -8,6 +8,16 @@
       <p class="link-holder"><textarea class="link-holder-text"></textarea></p>
     </div>
   </div>
+  <div id="upload-modal" class="modal">
+    <form action="/upload" enctype="multipart/form-data" method="post">
+      <p>
+        please specify a file, or a set of files: <br>
+        <input type="file", name="image" size="40">
+      </p>
+      <button class="upload-btn" name="uplaod">UPLOAD</button>
+    </form>
+    <span id="close-upload-modal-btn">X</span>
+  </div>
 
   <p>Number of files: {{ len .files }}</p>
   <ul>
@@ -25,13 +35,5 @@
     {{ end }}
   </ul>
   <!-- 이 기능을 새로운 창으로 띄우도록 고민해보자. -->
-  <form action="/upload" enctype="multipart/form-data" method="post">
-    <p>
-      please specify a file, or a set of files: <br>
-      <input type="file", name="image" size="40">
-    </p>
-    <div>
-      <button class="submit-file" value="send">send</button>
-    </div>
-  </form>
+    <button class="submit-file" value="send">send</button>
 {{template "footer"}}
