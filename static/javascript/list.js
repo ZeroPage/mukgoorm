@@ -12,7 +12,7 @@ window.onload = function() {
         modal.style.display = "none";
     }
 
-    closeUploadModalBtn.onclick = function() {
+    closeUploadModalBtn.onclick = function(event) {
         uploadModal.style.display = "none";
     }
 

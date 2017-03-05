@@ -18,6 +18,7 @@
     border: 1px solid #888;
     width: 80%;
 }
+
 #upload-modal {
     display: none;
     position: fixed;
@@ -67,6 +68,19 @@
 
 #close-modal-btn:hover,
 #close-modal-btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+#close-upload-modal-btn {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#close-upload-modal-btn:hover,
+#close-upload-modal-btn:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
