@@ -10,11 +10,11 @@ import (
 )
 
 func Search(c *gin.Context) {
-	query := c.Query("search")
+	query := c.Query("q")
 	// TODO query check
 
 	files := search(query)
-	c.HTML(http.StatusOK, "search/list.tmpl", gin.H{
+	c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 		"files": files,
 	})
 }
