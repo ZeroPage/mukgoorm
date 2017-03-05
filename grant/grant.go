@@ -12,13 +12,13 @@ const (
 	READ_ONLY
 )
 
-func FromPassword(password string) Grant {
-	sharePassword := setting.GetPassword()
+func FromPassword(pwd string) Grant {
+	shared := setting.GetPassword()
 
-	switch password {
-	case sharePassword.AdminPassword:
+	switch pwd {
+	case shared.AdminPwd:
 		return ADMIN
-	case sharePassword.ReadOnlyPassword:
+	case shared.ROnlyPwd:
 		return READ_ONLY
 	default:
 		return FAIL

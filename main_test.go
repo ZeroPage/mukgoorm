@@ -20,8 +20,8 @@ func initialize() {
 	dir.Path = "testdata"
 
 	pwd := setting.GetPassword()
-	pwd.AdminPassword = "admin"
-	pwd.ReadOnlyPassword = "readonly"
+	pwd.AdminPwd = "admin"
+	pwd.ROnlyPwd = "readonly"
 }
 
 var session string
@@ -33,7 +33,7 @@ func init() {
 
 	data := url.Values{}
 	pwd := setting.GetPassword()
-	data.Set("password", pwd.AdminPassword)
+	data.Set("password", pwd.AdminPwd)
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBufferString(data.Encode()))
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()

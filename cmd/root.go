@@ -22,18 +22,19 @@ import (
 var RootCmd = &cobra.Command{
 	Use: "root",
 	Run: func(cmd *cobra.Command, args []string) {
-		password := setting.GetPassword()
-		password.AdminPassword = adminPassword
-		password.ReadOnlyPassword = readOnlyPassword
-		setting := setting.GetDirectory()
-		setting.Path = path
+		dir := setting.GetDirectory()
+		dir.Path = path
+
+		pwd := setting.GetPassword()
+		pwd.AdminPwd = adminPwd
+		pwd.ROnlyPwd = rOnlyPwd
 	},
 }
 
-var path, adminPassword, readOnlyPassword string
+var path, adminPwd, rOnlyPwd string
 
 func init() {
 	RootCmd.Flags().StringVarP(&path, "dir", "D", "", "directory")
-	RootCmd.Flags().StringVarP(&adminPassword, "admin-password", "A", "", "Admin password")
-	RootCmd.Flags().StringVarP(&readOnlyPassword, "read-only-password", "R", "", "read only password")
+	RootCmd.Flags().StringVarP(&adminPwd, "admin-password", "A", "", "Admin password")
+	RootCmd.Flags().StringVarP(&rOnlyPwd, "read-only-password", "R", "", "Read only password")
 }
