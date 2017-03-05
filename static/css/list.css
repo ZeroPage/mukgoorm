@@ -1,0 +1,18 @@
+.top{
+	background-color: grey;
+  color: white;
+	padding: 5px;
+}
+.middle{
+	content: "";
+	display: inline;
+}
+.middle-left{
+	float: left;
+	width: 25%;
+}
+
+.middle-right{
+	float: left;
+	width: 75%;
+}
