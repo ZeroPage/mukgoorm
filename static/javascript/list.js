@@ -24,7 +24,7 @@ window.onload = function() {
     }
 
     uploadBtn.onclick = function(event) {
-      uploadModal.style.display = "block";
+        uploadModal.style.display = "block";
     }
 
     Array.from(shareBtns).forEach(function(element) {
