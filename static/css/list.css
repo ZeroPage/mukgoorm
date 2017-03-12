@@ -1,20 +1,19 @@
 .top{
-	border-style: solid;
 	background-color: grey;
 	color: white;
 	padding: 5px;
 }
 .middle{
-	border-style: solid;
-	padding: 10px;
+	padding: 5px;
 }
 .middle-left{
-	border-style: solid;
 	float: left;
 	width: 25%;
 }
 
 .middle-right{
-	border-style: solid;
 	margin-left: 25%;
+}
+
+.bottom{
 }

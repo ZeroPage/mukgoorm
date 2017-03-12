@@ -1,9 +1,7 @@
 {{template "header"}}
-<head>
-	<link rel="stylesheet" type="text/css" href="static/css/list.css">
-</head>
   <script src="/static/javascript/list.js"></script>
   <link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
+	<link rel="stylesheet" type="text/css" href="static/css/list.css">
   <div id="share-modal" class="modal">
     <div class="share-modal-content">
       <span id="copy-btn">COPY</span>
@@ -53,12 +51,11 @@
 	</div>
 
 	<div class="bottom">
+		<div>
+			<input class="search-input" placeholder="search"></input>
+			<button class="search-btn">Search</button>
+		</div>
 	</div>
 
   <button class="submit-file" value="send">send</button>
-
-  <div>
-    <input class="search-input" placeholder="search"></input>
-    <button class="search-btn">Search</button>
-  </div>
 {{template "footer"}}
