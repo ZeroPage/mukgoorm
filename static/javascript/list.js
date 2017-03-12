@@ -34,6 +34,14 @@ window.onload = function() {
             modal.style.display = "block";
         }
     });
+
+    // Search Button
+    var searchBtn = document.querySelector('.search-btn');
+    searchBtn.onclick = function(event) {
+        var query = event.target.parentElement.querySelector(".search-input").value;
+        url = "/search?q=" + query;
+        location.href = url;
+    }
 }
 
 function remove(filePath) {

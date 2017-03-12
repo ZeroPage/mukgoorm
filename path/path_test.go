@@ -1,4 +1,4 @@
-package handlers
+package path
 
 import (
 	"testing"
@@ -6,16 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetFileInfoAndPath(t *testing.T) {
+func TestPathInfoFrom(t *testing.T) {
 	root := "../tmp/dat"
-	result, err := getFileInfoAndPath(root)
+	result, err := PathInfoFrom(root)
 	assert.Equal(t, err, nil)
 	assert.NotZero(t, len(*result))
 }
 
-func TestGetFileInfoAndPathFail(t *testing.T) {
+func TestPathInfoFromFail(t *testing.T) {
 	root := "nodir"
-	result, err := getFileInfoAndPath(root)
+	result, err := PathInfoFrom(root)
 	assert.Error(t, err)
 	assert.Zero(t, len(*result))
 }
