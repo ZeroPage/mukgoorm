@@ -14,5 +14,5 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, len(res), 0)
 
 	res = search("A")
-	assert.Equal(t, len(res), 1)
+	assert.Equal(t, len(res), 2)
 }
