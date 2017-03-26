@@ -1,6 +1,7 @@
 {{template "header"}}
   <script src="/static/javascript/list.js"></script>
   <link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
+	<link rel="stylesheet" type="text/css" href="static/css/list.css">
   <div id="share-modal" class="modal">
     <div class="share-modal-content">
       <span id="copy-btn">COPY</span>
@@ -21,25 +22,40 @@
     </div>
   </div>
 
-  <p>Number of files: {{ len .files }}</p>
-  <ul>
-    {{ range .files}}
-      <li>
-        {{ if eq .File.Mode.IsDir true }}
-          <a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
-        {{ else }}
-          <a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
-        {{ end }}
-        <a href="/down?dir={{.Path}}" dir="{{.Path}}">download</a>
-        <button class="share-btn" name="share">share</button>
-        <button onclick="remove({{.Path}})">delete</button>
-      </li>
-    {{ end }}
-  </ul>
-  <button class="submit-file" value="send">send</button>
+	<div class="top">
+	  <p> Mukgoorm <p>
+    <p>Number of files: {{ len .files }}</p>
+	</div>
 
-  <div>
-    <input class="search-input" placeholder="search"></input>
-    <button class="search-btn">Search</button>
-  </div>
+	<div class="middle">
+		<div class="middle-left">
+			<p> file-paths </p>
+			<p> file-paths </p>
+		</div>
+		<div class="middle-right">
+		  <ul>
+		    {{ range .files}}
+		      <li>
+		        {{ if eq .File.Mode.IsDir true }}
+		          <a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
+		        {{ else }}
+		          <a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
+		        {{ end }}
+		        <a href="/down?dir={{.Path}}" dir="{{.Path}}">download</a>
+		        <button class="share-btn" name="share">share</button>
+		        <button onclick="remove({{.Path}})">delete</button>
+		      </li>
+		    {{ end }}
+		  </ul>
+		</div>
+	</div>
+
+	<div class="bottom">
+		<div>
+			<input class="search-input" placeholder="search"></input>
+			<button class="search-btn">Search</button>
+		</div>
+	</div>
+
+  <button class="submit-file" value="send">send</button>
 {{template "footer"}}
