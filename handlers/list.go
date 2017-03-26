@@ -20,7 +20,7 @@ func List(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 	}
 
-	files, err := path.PathInfoWithDirFrom(shared.Path)
+	files, err := path.PathInfoFrom(dir)
 	if err != nil {
 		log.Error(err)
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})

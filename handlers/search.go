@@ -24,7 +24,7 @@ func search(query string) (res []path.FilePathInfo) {
 		return
 	}
 
-	files, _ := path.PathInfoFrom(setting.GetDirectory().Path)
+	files, _ := path.PathInfoWithDirFrom(setting.GetDirectory().Path)
 
 	for _, file := range *files {
 		if strings.Contains(file.File.Name(), query) {
