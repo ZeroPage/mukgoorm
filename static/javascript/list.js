@@ -7,6 +7,7 @@ window.onload = function() {
     var uploadModal = document.getElementById('upload-modal');
     var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
     var uploadBtn = document.getElementsByClassName('submit-file')[0];
+    var uploadSelectedFileBtn = document.getElementsByClassName('upload-btn')[0];
 
     closeBtn.onclick = function(){
         modal.style.display = "none";
@@ -16,7 +17,6 @@ window.onload = function() {
         uploadModal.style.display = "none";
     }
 
-    // TODO copy button
     copyToCB.onclick = function(event) {
         var link = document.querySelector(".link-holder-text");
         link.select();
@@ -25,6 +25,14 @@ window.onload = function() {
 
     uploadBtn.onclick = function(event) {
         uploadModal.style.display = "block";
+    }
+
+    uploadSelectedFileBtn.onclick = function(event) {
+        var isSelected = document.getElementById('uploaded-file').files.length > 0;
+        if(!isSelected){
+          alert("You need to select a file.");
+        }
+        return isSelected;
     }
 
     Array.from(shareBtns).forEach(function(element) {
