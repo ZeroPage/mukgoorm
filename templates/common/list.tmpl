@@ -1,30 +1,30 @@
 {{template "header"}}
-  <script src="/static/javascript/list.js"></script>
-  <link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
+	<script src="/static/javascript/list.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
-  <div id="share-modal" class="modal">
-    <div class="share-modal-content">
-      <span id="copy-btn">COPY</span>
-      <span id="close-modal-btn">x</span>
-      <p class="link-holder"><textarea class="link-holder-text"></textarea></p>
-    </div>
-  </div>
-  <div id="upload-modal" class="modal">
-    <div class="upload-modal-content">
-      <span id="close-upload-modal-btn" name="close">X</span>
-      <form action="/upload" enctype="multipart/form-data" method="post">
-        <p>
-          please specify a file, or a set of files: <br>
-          <input type="file", name="image" size="40">
-        </p>
-        <button class="upload-btn" name="uplaod">UPLOAD</button>
-      </form>
-    </div>
-  </div>
+	<div id="share-modal" class="modal">
+	<div class="share-modal-content">
+		<span id="copy-btn">COPY</span>
+		<span id="close-modal-btn">x</span>
+		<p class="link-holder"><textarea class="link-holder-text"></textarea></p>
+	</div>
+	</div>
+	<div id="upload-modal" class="modal">
+	<div class="upload-modal-content">
+		<span id="close-upload-modal-btn" name="close">X</span>
+		<form action="/upload" enctype="multipart/form-data" method="post">
+		<p>
+			please specify a file, or a set of files: <br>
+			<input type="file", name="image" size="40">
+		</p>
+		<button class="upload-btn" name="uplaod">UPLOAD</button>
+		</form>
+	</div>
+	</div>
 
 	<div class="top">
-	  <p> Mukgoorm <p>
-    <p>Number of files: {{ len .files }}</p>
+		<p> Mukgoorm <p>
+	<p>Number of files: {{ len .files }}</p>
 	</div>
 
 	<div class="middle">
@@ -33,20 +33,22 @@
 			<p> file-paths </p>
 		</div>
 		<div class="middle-right">
-		  <ul>
-		    {{ range .files}}
-		      <li>
-		        {{ if eq .File.Mode.IsDir true }}
-		          <a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
-		        {{ else }}
-		          <a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
-		        {{ end }}
-		        <a href="/down?dir={{.Path}}" dir="{{.Path}}">download</a>
-		        <button class="share-btn" name="share">share</button>
-		        <button onclick="remove({{.Path}})">delete</button>
-		      </li>
-		    {{ end }}
-		  </ul>
+			<ul>
+			{{ range .files}}
+				<li>
+				{{ if eq .File.Mode.IsDir true }}
+					<a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
+				{{ else }}
+					<a class="file-link" href="/info?dir={{.Path}}">{{ .File.Name }}</a>
+				{{ end }}
+			<a href="/down?dir={{.Path}}" dir="{{.Path}}">
+				<button id="download" name="downlaod">download</button>
+			</a>
+				<button class="share-btn" name="share">share</button>
+				<button onclick="remove({{.Path}})">delete</button>
+				</li>
+			{{ end }}
+			</ul>
 		</div>
 	</div>
 
@@ -57,5 +59,5 @@
 		</div>
 	</div>
 
-  <button class="submit-file" value="send">send</button>
+	<button class="submit-file" value="send">send</button>
 {{template "footer"}}
