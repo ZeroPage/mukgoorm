@@ -5,11 +5,16 @@ import (
     "net/http"
     "io"
 		"github.com/gin-gonic/gin"
+		"strings"
 		"time"
 )
 func RemoteDownload(c *gin.Context) {
+
 	url := c.PostForm("url")
-	err := downloadFile(time.Now().Format("2006-01-02150405"), url)
+	tokens := strings.Split(url, "/")
+	tokens = strings.Split(tokens[len(tokens) -1], "?")
+	fileName := time.Now().Format("2006-01-02150405") +"_"+ tokens[0]
+	err := downloadFile(fileName, url)
 	if err != nil {
 		panic(err)
 	}
