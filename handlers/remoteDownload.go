@@ -1,15 +1,15 @@
 package handlers
 
 import (
-    "os"
-    "net/http"
-    "io"
-		"github.com/gin-gonic/gin"
-		"strings"
-		"time"
+	"os"
+	"net/http"
+	"io"
+	"strings"
+	"time"
+
+	"github.com/gin-gonic/gin"
 )
 func RemoteDownload(c *gin.Context) {
-
 	url := c.PostForm("url")
 	tokens := strings.Split(url, "/")
 	tokens = strings.Split(tokens[len(tokens) -1], "?")
