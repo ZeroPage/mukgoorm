@@ -54,8 +54,13 @@
 		<div>
 			<input class="search-input" placeholder="search"></input>
 			<button class="search-btn">Search</button>
+			<form action= "/remoteDownload" method="post" >
+		    	<input type = "text" placeholder="url" name = "url" />
+		      <input type = "submit"  value="Download"/>
+		  </form>
 		</div>
 	</div>
 
   <button class="submit-file" value="send">send</button>
+
 {{template "footer"}}
