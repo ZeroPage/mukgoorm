@@ -22,22 +22,22 @@ func RemoteDownload(c *gin.Context) {
 }
 
 func downloadFile(filename string, url string) (err error) {
-  out, err := os.Create("./tmp/dat/"+filename)
-  if err != nil  {
-    return err
-  }
-  defer out.Close()
+	out, err := os.Create("./tmp/dat/"+filename)
+	if err != nil  {
+		return err
+	}
+	defer out.Close()
 
-  resp, err := http.Get(url)
-  if err != nil {
-    return err
-  }
-  defer resp.Body.Close()
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 
-  _, err = io.Copy(out, resp.Body)
-  if err != nil  {
-    return err
-  }
+	_, err = io.Copy(out, resp.Body)
+	if err != nil  {
+		return err
+	}
 
-  return nil
+	return nil
 }
