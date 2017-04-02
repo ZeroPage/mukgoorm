@@ -63,6 +63,8 @@ func NewEngine() *gin.Engine {
 	loginedRoute.GET("/search", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Search)
 	loginedRoute.POST("/remote-download", handlers.CheckRole(grant.ADMIN), handlers.RemoteDownload)
 
+	r.GET("/img/:name", handlers.Image)
+
 	return r
 }
 
