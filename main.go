@@ -64,6 +64,7 @@ func NewEngine() *gin.Engine {
 	loginedRoute.GET("/info", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Info)
 	loginedRoute.POST("/upload", handlers.CheckRole(grant.ADMIN), handlers.Upload)
 	loginedRoute.DELETE("/delete", handlers.CheckRole(grant.ADMIN), handlers.Delete)
+	loginedRoute.GET("/search", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Search)
 
 	return r
 }
