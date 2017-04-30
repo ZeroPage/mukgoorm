@@ -18,7 +18,7 @@ func RemoteDownload(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
+	c.Redirect(http.StatusSeeOther, "/list")
 }
 
 func downloadFile(filename string, url string) (err error) {

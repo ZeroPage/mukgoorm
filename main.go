@@ -65,7 +65,7 @@ func NewEngine() *gin.Engine {
 	loginedRoute.POST("/upload", handlers.CheckRole(grant.ADMIN), handlers.Upload)
 	loginedRoute.DELETE("/delete", handlers.CheckRole(grant.ADMIN), handlers.Delete)
 	loginedRoute.GET("/search", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Search)
-	loginedRoute.POST("/remoteDownload", handlers.CheckRole(grant.ADMIN), handlers.RemoteDownload)
+	loginedRoute.POST("/remote-download", handlers.CheckRole(grant.ADMIN), handlers.RemoteDownload)
 
 	return r
 }
