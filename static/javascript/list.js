@@ -42,6 +42,24 @@ window.onload = function() {
         url = "/search?q=" + query;
         location.href = url;
     }
+
+    // TODO jsTree here
+    $(function() {
+      $('#container').jstree({
+        'core' : {
+          'data' : [
+            { "text" : "Root node", "children" : [
+                { "text" : "Child node 1" },
+                { "text" : "Child node 2", "children" : [{ "text" : "Child node 4" },] },
+                { "text" : "Child node 3",
+                  "state" : { "disabled" : true }
+                }
+              ]
+            }
+          ]
+        }
+      });
+    });
 }
 
 function remove(filePath) {

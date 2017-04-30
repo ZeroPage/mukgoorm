@@ -1,4 +1,8 @@
 {{template "header"}}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
+
 	<script src="/static/javascript/list.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
@@ -58,6 +62,10 @@
 			<button class="search-btn">Search</button>
 		</div>
 	</div>
+
+  <!-- TODO jsTree here -->
+  <div id="container">
+  </div>
 
 	<button class="submit-file" value="send">send</button>
 {{template "footer"}}
