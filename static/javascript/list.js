@@ -3,10 +3,10 @@ window.onload = function() {
 	var closeBtn = document.getElementById('close-modal-btn');
 	var shareBtns = document.getElementsByClassName('share-btn');
 	var copyToCB = document.getElementById('copy-btn');
-
 	var uploadModal = document.getElementById('upload-modal');
 	var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
-	var uploadBtn = document.getElementsByClassName('submit-file')[0];
+	var uploadBtn = document.querySelector('.submit-file');
+	var uploadSelectedFileBtn = document.querySelector('.upload-btn');
 
 	closeBtn.onclick = function(){
 		modal.style.display = "none";
