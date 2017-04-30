@@ -8,7 +8,6 @@ import (
 
 	"github.com/GeertJohan/go.rice"
 	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zeropage/mukgoorm/cmd"
 	"github.com/zeropage/mukgoorm/grant"
@@ -45,9 +44,6 @@ func NewEngine() *gin.Engine {
 	r.SetHTMLTemplate(templates())
 
 	r.StaticFS("/static", rice.MustFindBox("static").HTTPBox())
-
-	store := sessions.NewCookieStore([]byte("secret"))
-	r.Use(sessions.Sessions("_sess", store))
 
 	r.GET("/login", handlers.LoginForm)
 	r.POST("/login", handlers.Login)
