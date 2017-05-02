@@ -3,10 +3,13 @@ package handlers
 import (
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/zeropage/mukgoorm/image"
 	"github.com/zeropage/mukgoorm/setting"
 )
 
@@ -22,7 +25,25 @@ func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecor
 	return w
 }
 
+func before() {
+	image.MakeImageDir()
+
+	fileName := "pic.jpg"
+	dir := setting.GetDirectory().Path
+	image.Resize(300, path.Join(dir, fileName))
+}
+
+func after() {
+	imageDir := image.ImagePath()
+	if f, _ := os.Stat(imageDir); f != nil {
+		os.RemoveAll(imageDir)
+	}
+}
+
 func TestImage(t *testing.T) {
+	before()
+	defer after()
+
 	r := gin.Default()
 	r.GET("/img/:name", Image)
 

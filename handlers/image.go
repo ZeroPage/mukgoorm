@@ -6,12 +6,11 @@ import (
 	"path"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zeropage/mukgoorm/setting"
+	"github.com/zeropage/mukgoorm/image"
 )
 
-// TODO Need to do image preprocessing(compact)
 func Image(c *gin.Context) {
-	dir := setting.GetDirectory().Path
+	dir := image.ImagePath()
 	fileName := c.Param("name")
 	filedata, err := ioutil.ReadFile(path.Join(dir, fileName))
 	if err != nil {
