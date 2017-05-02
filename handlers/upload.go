@@ -27,5 +27,5 @@ func Upload(c *gin.Context) {
 		log.Error(err)
 	}
 
-	c.Redirect(http.StatusMovedPermanently, "http://localhost:8080/list")
+	c.Redirect(http.StatusSeeOther, "/list")
 }

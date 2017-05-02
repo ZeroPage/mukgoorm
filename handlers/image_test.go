@@ -10,14 +10,12 @@ import (
 	"github.com/zeropage/mukgoorm/setting"
 )
 
-func initialize() {
+func init() {
 	dir := setting.GetDirectory()
 	dir.Path = "../testdata"
 }
 
 func PerformRequest(r http.Handler, method, path string) *httptest.ResponseRecorder {
-	initialize()
-
 	req, _ := http.NewRequest(method, path, nil)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
