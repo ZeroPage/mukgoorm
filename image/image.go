@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image"
 	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 	"os"
 	"path"
@@ -13,28 +14,49 @@ import (
 	"github.com/zeropage/mukgoorm/setting"
 )
 
-func IsImage(filename string) bool {
+const (
+	JPG_EXTEND = "jpg"
+	PNG_EXTEND = "png"
+)
+
+func FileExtend(filename string) string {
 	s := strings.Split(filename, ".")
-	extend := s[len(s)-1]
-	if extend == "jpg" || extend == "png" {
+	return s[len(s)-1]
+}
+
+func IsImage(filename string) bool {
+	extend := FileExtend(filename)
+	if extend == JPG_EXTEND || extend == PNG_EXTEND {
 		return true
 	}
 	return false
 }
 
 func Resize(size uint, imagePath string) {
-	d, _ := ioutil.ReadFile(imagePath)
+	d, err := ioutil.ReadFile(imagePath)
+	if err != nil {
+		panic(err)
+	}
 	Compress(size, imagePath, d)
 }
 
 func Compress(size uint, imagePath string, data []byte) {
-	img, _, err := image.Decode(bytes.NewReader(data))
+	var img image.Image
+	var err error
+	if extend := FileExtend(imagePath); extend == PNG_EXTEND {
+		img, err = png.Decode(bytes.NewReader(data))
+	} else {
+		img, _, err = image.Decode(bytes.NewReader(data))
+	}
+	if err != nil {
+		panic(err)
+	}
 	newImg := resize.Resize(size, size, img, resize.Lanczos3)
 
-	dir := ImagePath()
 	s := strings.Split(imagePath, "/")
-	name := s[len(s)-1]
-	dir = path.Join(dir, name)
+	s = strings.Split(s[len(s)-1], ".")
+	name := s[0] + "." + JPG_EXTEND
+	dir := path.Join(ImagePath(), name)
 	out, err := os.Create(dir)
 	if err != nil {
 		panic(err)
