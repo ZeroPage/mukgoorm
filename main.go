@@ -12,6 +12,8 @@ import (
 	"github.com/zeropage/mukgoorm/cmd"
 	"github.com/zeropage/mukgoorm/grant"
 	"github.com/zeropage/mukgoorm/handlers"
+	"github.com/zeropage/mukgoorm/image"
+	"github.com/zeropage/mukgoorm/path"
 	"github.com/zeropage/mukgoorm/setting"
 )
 
@@ -20,6 +22,7 @@ import (
 //	go run main.go -D tmp/dat -A *PASSWORD* -R *PASSWORD*
 func main() {
 	CheckStartOptions()
+	go resizeImages()
 	r := NewEngine()
 
 	// FIXME recieve hostname or bind address
@@ -89,4 +92,19 @@ func templates() *template.Template {
 	}
 	fmt.Println(str)
 	return all
+}
+
+func resizeImages() {
+	image.MakeImageDir()
+
+	root := setting.GetDirectory().Path
+	files, _ := path.PathInfoWithDirFrom(root)
+	for _, f := range *files {
+		if f.File.IsDir() {
+			continue
+		}
+		if image.IsImage(f.File.Name()) {
+			image.Resize(300, f.Path)
+		}
+	}
 }
