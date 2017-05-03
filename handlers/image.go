@@ -14,7 +14,7 @@ func Image(c *gin.Context) {
 	dir := image.ImagePath()
 	fileName := c.Param("name")
 	s := strings.Split(fileName, ".")
-	name := s[0] + ".jpg"
+	name := s[0] + "." + image.JPG_EXTEND
 
 	filedata, err := ioutil.ReadFile(path.Join(dir, name))
 	if err != nil {
