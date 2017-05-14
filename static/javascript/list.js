@@ -63,6 +63,15 @@ window.onload = function() {
 		modal.style.display = "none";
 		return false;
 	}
+
+	var remoteDownSubmitBtn = document.querySelector(".remote-down-submit-btn");
+	remoteDownSubmitBtn.onclick = function(event) {
+		input = event.target.parentElement.querySelector("input");
+		if (input.value.length === 0) {
+			alert("Please enter url.");
+			return false;
+		}
+	}
 }
 
 function remove(filePath) {
