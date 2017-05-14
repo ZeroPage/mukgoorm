@@ -2,13 +2,16 @@
 	<script src="/static/javascript/list.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
+
 	<div id="share-modal" class="modal">
 		<div class="share-modal-content">
-			<span id="copy-btn">COPY</span>
-			<span id="close-modal-btn">x</span>
-			<p class="link-holder"><textarea class="link-holder-text"></textarea></p>
+			<p class="link-holder"> <textarea class="link-holder-text"></textarea> </p>
+			<button id="copy-btn" class="modal-btn">COPY</button>
+			<button id="close-btn" class="modal-btn">CANCEL</button>
+			<div style="clear: both;"></div>
 		</div>
 	</div>
+
 
 	<div id="upload-modal" class="modal">
 		<div class="upload-modal-content">
@@ -18,7 +21,7 @@
 				<input id="uploaded-file" type="file" name="image" size="40">
 				<button class="upload-btn" name="uplaod">UPLOAD</button>
 			</form>
-			<div style=""></div>
+			<div style="clear: both;"></div>
 		</div>
 	</div>
 

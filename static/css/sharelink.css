@@ -1,51 +1,42 @@
 #share-modal {
-		display: none;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgba(0,0,0,0.4);
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 100px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
 }
 
 .share-modal-content {
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
 #upload-modal {
-		display: none;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgba(0,0,0,0.4);
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
 }
 
 .upload-modal-content {
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
-}
-.link-holder-text{
-	border: none;
-	width: 100%;
-	height: 100%;
-	outline: none;
-	resize: none;
-	overflow: auto;
+	background-color: #fefefe;
+	margin: 100px auto 0;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
 .submit-file{
@@ -59,41 +50,42 @@
 	background-color: red;
 }
 
-#close-modal-btn {
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
+.link-holder-text{
+	border: none;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	resize: none;
+	overflow: auto;
+    font-size: 1em;
+    text-align: center;
+    word-break: break-word;
 }
 
-#close-modal-btn:hover,
-#close-modal-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
+.modal-btn {
+	color: #aaaaaa;
+	font-size: 1.2em;
+	font-weight: bold;
+	float: right;
+	margin: 0 3px;
 }
+.modal-btn:hover,
+.modal-brn:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
 #close-upload-modal-btn {
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 #close-upload-modal-btn:hover,
 #close-upload-modal-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
-}
-#copy-btn{
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-}
-#copy-btn:hover,
-#copy-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
 }

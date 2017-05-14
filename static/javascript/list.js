@@ -1,7 +1,7 @@
 window.onload = function() {
 	var modal = document.getElementById('share-modal');
-	var closeBtn = document.getElementById('close-modal-btn');
 	var shareBtns = document.getElementsByClassName('share-btn');
+	var closeBtn = document.getElementById('close-btn');
 	var copyToCB = document.getElementById('copy-btn');
 	var uploadModal = document.getElementById('upload-modal');
 	var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
