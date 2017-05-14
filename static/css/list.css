@@ -25,3 +25,13 @@ body {
 .bottom{
 	clear: left;
 }
+
+.right-item {
+	display: inline-block;
+	float: right;
+}
+
+.left-item {
+	display: inline-block;
+	float: left;
+}
