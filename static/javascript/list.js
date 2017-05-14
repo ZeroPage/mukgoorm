@@ -7,6 +7,7 @@ window.onload = function() {
 	var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
 	var uploadBtn = document.querySelector('.submit-file');
 	var uploadSelectedFileBtn = document.querySelector('.upload-btn');
+	var remoteDownBtn = document.querySelector(".remote-down-btn");
 
 	closeBtn.onclick = function(){
 		modal.style.display = "none";
@@ -14,6 +15,7 @@ window.onload = function() {
 
 	closeUploadModalBtn.onclick = function(event) {
 		uploadModal.style.display = "none";
+		return false;
 	}
 
 	copyToCB.onclick = function(event) {
@@ -36,8 +38,8 @@ window.onload = function() {
 
 	Array.from(shareBtns).forEach(function(element) {
 		element.onclick = function(event) {
-			link = event.target.parentElement.getElementsByClassName("file-link")[0].href;
-			modal.getElementsByClassName("link-holder-text")[0].textContent = link;
+			link = event.target.parentElement.querySelector(".file-link").href;
+			modal.querySelector(".link-holder-text").textContent = link;
 			modal.style.display = "block";
 		}
 	});
@@ -48,6 +50,18 @@ window.onload = function() {
 		var query = event.target.parentElement.querySelector(".search-input").value;
 		url = "/search?q=" + query;
 		location.href = url;
+	}
+
+	remoteDownBtn.onclick = function(event) {
+		downModal = document.querySelector("#remote-download-modal");
+		downModal.style.display = "block";
+	}
+
+	var remoteDownloadCancelBtn = document.querySelector(".remote-down-cancel-btn");
+	remoteDownloadCancelBtn.onclick = function(event) {
+		modal = document.querySelector("#remote-download-modal");
+		modal.style.display = "none";
+		return false;
 	}
 }
 

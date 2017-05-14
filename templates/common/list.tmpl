@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
 
 	<div id="share-modal" class="modal">
-		<div class="share-modal-content">
+		<div class="share-modal-content modal-content">
 			<p class="link-holder"> <textarea class="link-holder-text"></textarea> </p>
 			<button id="copy-btn" class="modal-btn">COPY</button>
 			<button id="close-btn" class="modal-btn">CANCEL</button>
@@ -12,14 +12,24 @@
 		</div>
 	</div>
 
-
 	<div id="upload-modal" class="modal">
-		<div class="upload-modal-content">
-			<span id="close-upload-modal-btn" name="close">X</span>
+		<div class="upload-modal-content modal-content">
 			<form id="upload-selected-file" action="/upload" enctype="multipart/form-data" method="post">
 				<p>please specify a file, or a set of files:</p>
-				<input id="uploaded-file" type="file" name="image" size="40">
-				<button class="upload-btn" name="uplaod">UPLOAD</button>
+				<input id="upload-file" type="file" name="image" size="50">
+				<button class="upload-btn modal-btn" name="uplaod">UPLOAD</button>
+				<button id="close-upload-modal-btn" class="modal-btn">CANCEL</button>
+			</form>
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+
+	<div id="remote-download-modal" class="modal">
+		<div class="modal-content">
+			<form class="modal-form" action="/remote-download" method="post">
+				<input type="text" placeholder="enter url" name="url" />
+				<button class="modal-btn">DOWNLOAD</button>
+				<button class="remote-down-cancel-btn modal-btn">CANCEL</button>
 			</form>
 			<div style="clear: both;"></div>
 		</div>
@@ -32,11 +42,8 @@
 			<input class="search-input" placeholder="search"></input>
 			<button class="search-btn">Search</button>
 		</div>
-		<button class="left-item">UPLOAD</button>
-		<form action= "/remote-download" method="post" class="left-item">
-			<input type = "text" placeholder="url" name = "url" />
-			<input type = "submit"	value="Download"/>
-		</form>
+		<button class="submit-file left-item">UPLOAD</button>
+		<button class="remote-down-btn left-item">REMOTE DOWNLOAD</button>
 		<div style="clear: both;"></div>
 	</div>
 
@@ -65,9 +72,5 @@
 		</div>
 	</div>
 
-	<div class="bottom">
-
-	</div>
-
-	<button class="submit-file" value="send">send</button>
+	<div class="bottom"></div>
 {{template "footer"}}
