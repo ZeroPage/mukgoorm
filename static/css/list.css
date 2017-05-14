@@ -1,11 +1,18 @@
+body {
+	font-family: monospace;
+	font-size: 1.1em;
+}
+
 .top{
 	background-color: grey;
 	color: white;
 	padding: 5px;
 }
+
 .middle{
 	padding: 5px;
 }
+
 .middle-left{
 	float: left;
 	width: 25%;
