@@ -34,16 +34,7 @@ body {
 .left-item {
 	display: inline-block;
 	float: left;
-	width: 57px;
+	min-width: 57px;
 	height: 30px;
-}
-
-#remote-download-modal {
-	display: none;
-}
-
-.modal-form > input {
-	width: 340px;
-	margin: 3px;
-	font-size: 0.9em;
+	margin-right: 3px;
 }
