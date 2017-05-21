@@ -1,11 +1,18 @@
+body {
+	font-family: monospace;
+	font-size: 1.1em;
+}
+
 .top{
 	background-color: grey;
 	color: white;
 	padding: 5px;
 }
-.middle{
+
+.middle {
 	padding: 5px;
 }
+
 .middle-left{
 	float: left;
 	width: 25%;
@@ -17,4 +24,26 @@
 
 .bottom{
 	clear: left;
+}
+
+.right-item {
+	display: inline-block;
+	float: right;
+}
+
+.left-item {
+	display: inline-block;
+	float: left;
+	width: 57px;
+	height: 30px;
+}
+
+#remote-download-modal {
+	display: none;
+}
+
+.modal-form > input {
+	width: 340px;
+	margin: 3px;
+	font-size: 0.9em;
 }

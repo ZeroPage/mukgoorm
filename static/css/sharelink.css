@@ -1,44 +1,32 @@
-#share-modal {
-		display: none;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgba(0,0,0,0.4);
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
 }
 
-.share-modal-content {
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
+.modal-content {
+	background-color: #fefefe;
+	margin: 100px auto 0;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
-#upload-modal {
-		display: none;
-		position: fixed;
-		z-index: 1;
-		padding-top: 100px;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		overflow: auto;
-		background-color: rgba(0,0,0,0.4);
+#upload-file {
+	font-size: 0.8em;
 }
 
-.upload-modal-content {
-		background-color: #fefefe;
-		margin: auto;
-		padding: 20px;
-		border: 1px solid #888;
-		width: 80%;
+.submit-file{
+	color: white;
+	background-color: red;
 }
+
 .link-holder-text{
 	border: none;
 	width: 100%;
@@ -46,54 +34,21 @@
 	outline: none;
 	resize: none;
 	overflow: auto;
+	font-size: 1em;
+	text-align: center;
+	word-break: break-word;
 }
 
-.submit-file{
-	position: fixed;
+.modal-btn {
+	color: #aaaaaa;
+	font-size: 1.2em;
+	font-weight: bold;
 	float: right;
-	right: 20px;
-	bottom: 20px;
-	width: 120px;
-	height: 90px;
-	color: white;
-	background-color: red;
+	margin: 0 3px;
 }
-
-#close-modal-btn {
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-}
-
-#close-modal-btn:hover,
-#close-modal-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
-}
-#close-upload-modal-btn {
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-}
-
-#close-upload-modal-btn:hover,
-#close-upload-modal-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
-}
-#copy-btn{
-		color: #aaaaaa;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-}
-#copy-btn:hover,
-#copy-btn:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
+.modal-btn:hover,
+.modal-brn:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
 }

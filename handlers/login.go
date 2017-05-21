@@ -9,7 +9,7 @@ import (
 )
 
 func LoginForm(c *gin.Context) {
-	c.HTML(http.StatusOK, "authority/input_password.tmpl", gin.H{})
+	c.HTML(http.StatusOK, "authority/login.tmpl", gin.H{})
 }
 
 func Login(c *gin.Context) {
