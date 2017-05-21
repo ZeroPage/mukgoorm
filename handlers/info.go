@@ -10,9 +10,8 @@ import (
 
 func Info(c *gin.Context) {
 	fileName := c.Query("dir")
-	file, err := os.OpenFile(fileName, os.O_RDONLY, 222)
-	fileinfo, infoerr := file.Stat()
-	if err != nil || infoerr != nil {
+	fileinfo, err := os.Stat(fileName)
+	if err != nil {
 		panic(err)
 	}
 

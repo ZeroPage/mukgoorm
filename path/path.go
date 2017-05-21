@@ -3,6 +3,8 @@ package path
 import (
 	"os"
 	"path/filepath"
+
+	"github.com/zeropage/mukgoorm/image"
 )
 
 type OPTION int
@@ -26,9 +28,11 @@ func walk(root string, options OPTION) (*[]FilePathInfo, error) {
 		if err != nil {
 			return err
 		}
-
 		if path == root {
 			return nil
+		}
+		if path == image.ImagePath() {
+			return filepath.SkipDir
 		}
 
 		files = append(files, FilePathInfo{info, path})
