@@ -54,8 +54,10 @@
 		</div>
 		<div class="middle-right">
 			<ul>
+			<form action="/multi-download" method="post">
 			{{ range .files}}
 				<li>
+					<input type="checkbox" name="chk_info" value="{{.Path}}">
 				{{ if eq .File.Mode.IsDir true }}
 					<a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
 				{{ else }}
@@ -68,6 +70,9 @@
 					<button onclick="remove({{.Path}})">delete</button>
 				</li>
 			{{ end }}
+				<input type="text" placeholder="enter fileName" name="fileName" />
+				<button type="submit">SUBMIT</button>
+			</form>
 			</ul>
 		</div>
 	</div>
