@@ -6,6 +6,8 @@ function httpRequest(method, url, body) {
 		req.onload = function() {
 			if (req.status == 200) {
 				resolve(req.response);
+			} else {
+				reject(req.response);
 			}
 		};
 

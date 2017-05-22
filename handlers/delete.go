@@ -24,7 +24,8 @@ func Delete(c *gin.Context) {
 	err := os.Remove(target)
 	if err != nil {
 		log.Warn(err)
-		c.JSON(http.StatusNotFound, gin.H{"error": err})
+		c.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{})

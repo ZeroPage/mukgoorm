@@ -78,14 +78,13 @@ require(['static/javascript/common.js'], function() {
 		Array.from(deleteBtns).forEach(function(elem){
 			elem.onclick = function(event) {
 				path = event.target.parentElement.getAttribute("path");
-				console.log(path);
 
 				httpRequest('DELETE', "/delete?dir=" + path).then(
 					response => {
 						location.reload();
 					},
 					error => {
-						alert("Can't delete file/folder");
+						alert(JSON.parse(error).error);
 					});
 			}
 		})
