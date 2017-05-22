@@ -1,5 +1,6 @@
 {{template "header"}}
-	<script src="/static/javascript/list.js"></script>
+  <script data-main="/static/javascript/common.js" src="static/javascript/require.js"></script>
+  <script src="static/javascript/list.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
 
@@ -55,7 +56,7 @@
 		<div class="middle-right">
 			<ul>
 			{{ range .files}}
-				<li>
+				<li path="{{.Path}}">
 				{{ if eq .File.Mode.IsDir true }}
 					<a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
 				{{ else }}
@@ -65,7 +66,7 @@
 						<button id="download" name="downlaod">download</button>
 					</a>
 					<button class="share-btn" name="share">share</button>
-					<button onclick="remove({{.Path}})">delete</button>
+					<button class="delete-btn">delete</button>
 				</li>
 			{{ end }}
 			</ul>
