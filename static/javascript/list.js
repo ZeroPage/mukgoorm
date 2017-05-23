@@ -6,7 +6,7 @@ require(['static/javascript/common.js'], function() {
 		var copyToCB = document.getElementById('copy-btn');
 		var uploadModal = document.getElementById('upload-modal');
 		var closeUploadModalBtn = document.getElementById('close-upload-modal-btn');
-		var uploadBtn = document.querySelector('.submit-file');
+		var uploadBtn = document.querySelector('.submit-file-btn');
 		var uploadSelectedFileBtn = document.querySelector('.upload-btn');
 		var remoteDownBtn = document.querySelector(".remote-down-btn");
 
