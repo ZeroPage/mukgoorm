@@ -26,9 +26,19 @@ func FromPassword(pwd string) Grant {
 }
 
 func FromSession(sessionVal interface{}) (Grant, bool) {
-	val, ok := sessionVal.(int)
-	if !ok {
-		return FAIL, false
+	if val, ok := sessionVal.(int); !ok {
+		return FAIL, ok
+	} else {
+		return Grant(val), ok
 	}
-	return Grant(val), true
+}
+
+func Name(g Grant) string {
+	switch g {
+	case READ_ONLY:
+		return "Read only"
+	case ADMIN:
+		return "Admin"
+	}
+	return "Guest"
 }

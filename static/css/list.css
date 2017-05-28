@@ -3,10 +3,14 @@ body {
 	font-size: 1.1em;
 }
 
-.top{
+.top {
 	background-color: grey;
 	color: white;
-	padding: 5px;
+	padding: 9px;
+}
+
+.nav-title {
+	margin: 10px 0 10px;
 }
 
 .middle {
@@ -26,13 +30,15 @@ body {
 	clear: left;
 }
 
-.right-item {
+.item {
 	display: inline-block;
+}
+
+.right-item {
 	float: right;
 }
 
 .left-item {
-	display: inline-block;
 	float: left;
 	min-width: 57px;
 	height: 30px;
