@@ -29,13 +29,12 @@ button {
 	margin: 10px auto;
 	font-size: 1.2em;
 	background-color: white;
-	border: 1px grey solid;
+	border: 1px #ababab solid;
 }
 
-.submit{
-	margin-top: 8px;
-	width: 40%;
-	margin-left: 30%;
-	margin-right: auto;
-	position: relative;
+button:hover {
+	color: #ababab;
+	border-color: #efefef;
+	text-decoration: none;
+	cursor: pointer;
 }

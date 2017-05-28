@@ -140,5 +140,5 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 
 	w = PerformRequestWithSession(r, "DELETE", loc)
-	assert.Equal(t, http.StatusNotFound, w.Code)
+	assert.Equal(t, http.StatusNotAcceptable, w.Code)
 }

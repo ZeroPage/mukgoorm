@@ -1,5 +1,6 @@
 {{template "header"}}
-	<script src="/static/javascript/list.js"></script>
+	<script data-main="/static/javascript/common.js" src="static/javascript/require.js"></script>
+	<script src="static/javascript/list.js"></script>
 	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
 
@@ -42,7 +43,7 @@
 			<input class="search-input" placeholder="search"></input>
 			<button class="search-btn">Search</button>
 		</div>
-		<button class="submit-file left-item">UPLOAD</button>
+		<button class="submit-file-btn left-item">UPLOAD</button>
 		<button class="remote-down-btn left-item">REMOTE DOWNLOAD</button>
 		<div style="clear: both;"></div>
 	</div>
@@ -56,7 +57,7 @@
 			<ul>
 			<form action="/multi-download" method="post">
 			{{ range .files}}
-				<li>
+				<li path="{{.Path}}">
 					<input type="checkbox" name="chk_info" value="{{.Path}}">
 				{{ if eq .File.Mode.IsDir true }}
 					<a class="file-link" href="/list?dir={{.Path}}">{{ .File.Name }}</a>
@@ -67,7 +68,7 @@
 						<button id="download" name="downlaod">download</button>
 					</a>
 					<button class="share-btn" name="share">share</button>
-					<button onclick="remove({{.Path}})">delete</button>
+					<button class="delete-btn">delete</button>
 				</li>
 			{{ end }}
 				<input type="text" placeholder="enter fileName" name="fileName" />
