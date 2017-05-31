@@ -107,5 +107,13 @@ window.onload = function() {
 					alert(JSON.parse(error).error);
 				});
 		}
-	})
+	});
+
+	var logoutBtn = document.querySelector(".logout-btn")
+	logoutBtn.onclick = function() {
+		httpRequest('DELETE', "/logout").then(
+			() => {
+				location.reload()
+			});
+	}
 }
