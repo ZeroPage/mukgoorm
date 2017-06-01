@@ -1,0 +1,24 @@
+.top {
+	background-color: grey;
+	color: white;
+	padding: 9px;
+}
+
+.nav-top {
+	margin: 10px 0 10px;
+}
+
+.item {
+	display: inline-block;
+}
+
+.right-item {
+	float: right;
+}
+
+.left-item {
+	float: left;
+	min-width: 57px;
+	height: 30px;
+	margin-right: 3px;
+}
