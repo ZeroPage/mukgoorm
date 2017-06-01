@@ -3,6 +3,22 @@
 	<link rel="stylesheet" type="text/css" href="static/css/sharelink.css">
 	<link rel="stylesheet" type="text/css" href="static/css/list.css">
 
+	<div class="top">
+		<div class="item"> Mukgoorm </div>
+		<div class="nav-top">
+			<div class="item left-item">logined as: {{ .user }}</div>
+			<button class="item right-item logout-btn">LOGOUT</button>
+		</div>
+		<div style="clear: both;"></div>
+		<button class="submit-file-btn item left-item">UPLOAD</button>
+		<button class="remote-down-btn item left-item">REMOTE DOWNLOAD</button>
+		<div class="item right-item">
+			<input class="search-input" placeholder="search"></input>
+			<button class="search-btn">Search</button>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+
 	<div id="share-modal" class="modal">
 		<div class="share-modal-content modal-content">
 			<p class="link-holder"> <textarea class="link-holder-text"></textarea> </p>
@@ -33,18 +49,6 @@
 			</form>
 			<div style="clear: both;"></div>
 		</div>
-	</div>
-
-	<div class="top">
-		<p> Mukgoorm </p>
-		<p>Number of files: {{ len .files }}</p>
-		<div class="right-item">
-			<input class="search-input" placeholder="search"></input>
-			<button class="search-btn">Search</button>
-		</div>
-		<button class="submit-file-btn left-item">UPLOAD</button>
-		<button class="remote-down-btn left-item">REMOTE DOWNLOAD</button>
-		<div style="clear: both;"></div>
 	</div>
 
 	<div class="middle">

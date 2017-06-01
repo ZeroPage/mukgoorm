@@ -142,3 +142,13 @@ func TestDelete(t *testing.T) {
 	w = PerformRequestWithSession(r, "DELETE", loc)
 	assert.Equal(t, http.StatusNotAcceptable, w.Code)
 }
+
+func TestLogout(t *testing.T) {
+	r := NewEngine()
+
+	w := PerformRequestWithSession(r, "DELETE", "/logout")
+	assert.Equal(t, http.StatusOK, w.Code)
+
+	w = PerformRequestWithSession(r, "GET", "/")
+	assert.Equal(t, http.StatusSeeOther, w.Code)
+}

@@ -10,12 +10,14 @@ import (
 )
 
 func Search(c *gin.Context) {
-	query := c.Query("q")
 	// TODO query check
+	query := c.Query("q")
 
 	files := search(query)
+	user, _ := c.Get("user")
 	c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 		"files": files,
+		"user":  user,
 	})
 }
 
@@ -25,12 +27,11 @@ func search(query string) (res []path.FilePathInfo) {
 	}
 
 	files, _ := path.PathInfoWithDirFrom(setting.GetDirectory().Path)
-
 	for _, file := range *files {
 		if strings.Contains(file.File.Name(), query) {
 			res = append(res, file)
 		}
 	}
 
-	return res
+	return
 }

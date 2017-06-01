@@ -26,7 +26,9 @@ func List(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "errors/404.tmpl", gin.H{})
 	}
 
+	user, _ := c.Get("user")
 	c.HTML(http.StatusOK, "common/list.tmpl", gin.H{
 		"files": files,
+		"user":  user,
 	})
 }

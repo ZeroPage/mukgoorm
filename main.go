@@ -65,6 +65,7 @@ func NewEngine() *gin.Engine {
 	loginedRoute.DELETE("/delete", handlers.CheckRole(grant.ADMIN), handlers.Delete)
 	loginedRoute.GET("/search", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Search)
 	loginedRoute.POST("/remote-download", handlers.CheckRole(grant.ADMIN), handlers.RemoteDownload)
+	loginedRoute.DELETE("/logout", handlers.CheckRole(grant.ADMIN, grant.READ_ONLY), handlers.Logout)
 
 	r.GET("/img/:name", handlers.Image)
 

@@ -14,6 +14,7 @@ func CheckLogin(c *gin.Context) {
 
 	if auth, ok := grant.FromSession(sess.Get("authority")); ok {
 		c.Set("authority", auth)
+		c.Set("user", grant.Name(auth))
 	} else {
 		session.GlobalSessions.SessionDestroy(c.Writer, c.Request)
 		c.Redirect(http.StatusSeeOther, "/login")
