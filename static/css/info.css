@@ -1,0 +1,25 @@
+.container {
+	margin: 10px auto 10px;
+}
+
+.image-holder {
+	width: 300px;
+	height: 300px;
+	display: inline-block;
+	margin: 0 6px 0;
+}
+
+.info-holder {
+	display: inline-block;
+	height: 500px;
+	position: fixed;
+	margin: 0 6px 0;
+}
+
+.item-label {
+	color: blue;
+}
+
+.item {
+	margin-left: 3px;
+}
