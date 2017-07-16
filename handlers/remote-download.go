@@ -18,36 +18,34 @@ func RemoteDownload(c *gin.Context) {
 	tokens := strings.Split(url, "/")
 	tokens = strings.Split(tokens[len(tokens)-1], "?")
 	fileName := time.Now().Format("2006-01-02150405") + "_" + tokens[0]
-	fileName = path.Join(setting.GetDirectory().Path, fileName)
-	err := downloadFile(fileName, url)
+	filePath := path.Join(setting.GetDirectory().Path, fileName)
+	_, err := downloadFile(filePath, url)
 	if err != nil {
 		panic(err)
 	}
 
-	if image.IsImage(fileName) {
-		go image.Resize(300, fileName)
-	}
+	go image.Resize(filePath, 300)
 
 	c.Redirect(http.StatusSeeOther, "/list")
 }
 
-func downloadFile(filePath string, url string) (err error) {
+func downloadFile(filePath string, url string) (string, error) {
 	out, err := os.Create(filePath)
 	if err != nil {
-		return err
+		return filePath, err
 	}
 	defer out.Close()
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return filePath, err
 	}
 	defer resp.Body.Close()
 
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
-		return err
+		return filePath, err
 	}
 
-	return nil
+	return filePath, nil
 }

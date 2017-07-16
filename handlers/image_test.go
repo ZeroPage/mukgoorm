@@ -29,8 +29,7 @@ func before() {
 	image.MakeImageDir()
 
 	fileName := "pic.jpg"
-	dir := setting.GetDirectory().Path
-	image.Resize(300, path.Join(dir, fileName))
+	image.Resize(path.Join(setting.GetDirectory().Path, fileName), 300)
 }
 
 func after() {

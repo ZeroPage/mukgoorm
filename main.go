@@ -104,8 +104,6 @@ func resizeImages() {
 		if f.File.IsDir() {
 			continue
 		}
-		if image.IsImage(f.File.Name()) {
-			image.Resize(300, f.Path)
-		}
+		image.Resize(f.Path, 300)
 	}
 }
