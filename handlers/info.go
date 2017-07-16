@@ -25,9 +25,6 @@ func Info(c *gin.Context) {
 		fileType = "image"
 		location = fmt.Sprintf("/img/%s", fileinfo.Name())
 	}
-	if fileinfo.IsDir() {
-		fileType = "dir"
-	}
 	c.HTML(http.StatusOK, "common/info.tmpl", gin.H{
 		"src":        location,
 		"type":       fileType,
