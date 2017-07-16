@@ -15,11 +15,20 @@ func Info(c *gin.Context) {
 		panic(err)
 	}
 
+	var typeLabel string
+	if fileinfo.IsDir() {
+		typeLabel = "Dir"
+	} else {
+		typeLabel = "File"
+	}
+
+	user, _ := c.Get("user")
 	c.HTML(http.StatusOK, "common/info.tmpl", gin.H{
 		"filename":   fileinfo.Name(),
 		"directory":  strings.Split(fileName, fileinfo.Name())[0],
 		"size":       fileinfo.Size(),
-		"type":       fileinfo.Mode(), // FIXME : This is not type that we want.
+		"isFile":     typeLabel,
 		"overwriten": fileinfo.ModTime(),
+		"user":       user,
 	})
 }

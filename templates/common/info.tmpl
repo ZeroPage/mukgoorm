@@ -1,12 +1,19 @@
-{{template "header"}}
-<div>
-	<img src="/img/{{.filename}}" width="300px"></img>
-	<ul>
-		{{.filename}}<br/>
-		{{.directory}}<br/>
-		{{.size}}<br/>
-		{{.type}}<br/>
-		{{.overwriten}}<br/>
-	</ul>
+{{template "header" .}}
+<link rel="stylesheet" type="text/css" href="static/css/info.css">
+
+<div class="container">
+  <img class="image-holder" src="/img/{{.filename}}"></img>
+  <div class="info-holder">
+    <div class="item-label">Fileinfo</div>
+		<div class="item">{{.filename}}</div>
+    <div class="item-label">Directory</div>
+		<div class="item">{{.directory}}</div>
+    <div class="item-label">Size</div>
+    <div class="item">{{.size}}</div>
+    <div class="item-label">Type</div>
+		<div class="item">{{.isFile}}</div>
+    <div class="item-label">Modified at</div>
+    <div class="item">{{.overwriten}}</div>
+  </div>
 </div>
 {{template "footer"}}
