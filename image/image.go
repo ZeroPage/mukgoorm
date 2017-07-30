@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	JPG_EXTEND = "jpg"
-	PNG_EXTEND = "png"
+	JPG_EXTEND  = "jpg"
+	JPEG_EXTEND = "jpeg"
+	PNG_EXTEND  = "png"
 )
 
 func FileExtend(filename string) string {
@@ -32,7 +33,12 @@ func IsImage(filename string) bool {
 	return false
 }
 
-func Resize(size uint, imagePath string) {
+func Resize(imagePath string, size uint) {
+	t := signature(imagePath)
+	if t != JPEG_EXTEND && t != PNG_EXTEND {
+		return
+	}
+
 	d, err := ioutil.ReadFile(imagePath)
 	if err != nil {
 		panic(err)

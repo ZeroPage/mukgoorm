@@ -19,9 +19,8 @@ func before() {
 }
 
 func after() {
-	imageDir := ImagePath()
-	if f, _ := os.Stat(imageDir); f != nil {
-		os.RemoveAll(imageDir)
+	if f, _ := os.Stat(ImagePath()); f != nil {
+		os.RemoveAll(ImagePath())
 	}
 }
 
@@ -30,9 +29,7 @@ func TestResize(t *testing.T) {
 	defer after()
 
 	fileName := "pic.jpg"
-	dir := setting.GetDirectory().Path
-	println(fileName, dir)
-	Resize(300, path.Join(dir, fileName))
+	Resize(path.Join(setting.GetDirectory().Path, fileName), 300)
 
 	f, err := os.Stat(path.Join(ImagePath(), fileName))
 	assert.NotNil(t, f)

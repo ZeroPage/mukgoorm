@@ -28,9 +28,7 @@ func Upload(c *gin.Context) {
 		log.Error(err)
 	}
 
-	if image.IsImage(out.Name()) {
-		go image.Resize(300, out.Name())
-	}
+	go image.Resize(out.Name(), 300)
 
 	c.Redirect(http.StatusSeeOther, "/list")
 }
